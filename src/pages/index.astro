@@ -1,0 +1,98 @@
+---
+import { getCollection } from 'astro:content';
+import SiteLayout from '../components/SiteLayout.astro';
+
+const [films, pages] = await Promise.all([
+  getCollection('films'),
+  getCollection('pages'),
+]);
+const home = pages.find((page) => page.id === 'home');
+const sortedFilms = [...films].sort((a, b) => (b.data.year ?? 0) - (a.data.year ?? 0));
+const featuredFilms = sortedFilms
+  .filter((film) => film.data.featured)
+---
+
+<SiteLayout title={home?.data.title ?? 'Inicio'} description={home?.data.intro}>
+  {featuredFilms.length > 0 ? (
+    <section class="hero-carousel" aria-label="Películas destacadas">
+      {featuredFilms.map((film, index) => (
+        <article class:list={['hero-slide', index === 0 && 'is-active']} data-slide={index}>
+          {film.data.poster && <img class="hero-image" src={film.data.poster} alt="" />}
+          <div class="hero-shade"></div>
+          <div class="hero-copy">
+            <p class="eyebrow">Una película de Casa Luz Films</p>
+            <h1>{film.data.title}</h1>
+            <p class="hero-credit">Dirección: {film.data.director}</p>
+            <a class="text-link light-link" href={`/films/${film.id}/`}>Descubrir película <span>↗</span></a>
+          </div>
+        </article>
+      ))}
+      {featuredFilms.length > 1 && (
+        <div class="carousel-controls">
+          <button type="button" data-carousel="previous" aria-label="Película anterior">‹</button>
+          <span><span data-carousel-current>01</span> / {String(featuredFilms.length).padStart(2, '0')}</span>
+          <button type="button" data-carousel="next" aria-label="Película siguiente">›</button>
+        </div>
+      )}
+    </section>
+  ) : (
+    <section class="hero-empty">
+      <p class="eyebrow">Productora independiente</p>
+      <h1>{home?.data.intro || 'Historias que encuentran su luz.'}</h1>
+      <a class="text-link light-link" href="/films/">Conoce nuestras películas <span>↗</span></a>
+    </section>
+  )}
+
+  <section class="home-intro">
+    <p class="eyebrow">{home?.data.title ?? 'Casa Luz Films'}</p>
+    <p>{home?.data.paragraphs[0] ?? 'Desarrollamos y producimos cine con una mirada propia, abierta al mundo y arraigada en nuestras historias.'}</p>
+    <a class="text-link" href="/about/">Ver más <span>↗</span></a>
+  </section>
+
+  <section class="home-films" id="films" aria-labelledby="home-films-title">
+    <header class="home-films-heading">
+      <h2 id="home-films-title">Films</h2>
+    </header>
+    {sortedFilms.length > 0 ? (
+      <div class="film-grid">
+        {sortedFilms.map((film) => (
+          <a class="film-card" href={`/films/${film.id}/`}>
+            <div class="film-image">
+              {film.data.poster ? (
+                <img src={film.data.poster} alt="" loading="lazy" />
+              ) : <div class="image-placeholder" aria-hidden="true">CL</div>}
+            </div>
+            <h3>{film.data.title}</h3>
+            <p>Dirección: {film.data.director}{film.data.year ? ` · ${film.data.year}` : ''}</p>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <p class="empty-state">Nuestra filmografía estará disponible pronto.</p>
+    )}
+    <a class="text-link home-films-link" href="/films/">Ver toda la filmografía <span>↗</span></a>
+  </section>
+
+  <script>
+    const slides = [...document.querySelectorAll<HTMLElement>('[data-slide]')];
+    let currentSlide = 0;
+
+    function showSlide(index: number) {
+      if (!slides.length) return;
+      currentSlide = (index + slides.length) % slides.length;
+      slides.forEach((slide, slideIndex) => {
+        slide.classList.toggle('is-active', slideIndex === currentSlide);
+        slide.setAttribute('aria-hidden', String(slideIndex !== currentSlide));
+      });
+      const counter = document.querySelector('[data-carousel-current]');
+      if (counter) counter.textContent = String(currentSlide + 1).padStart(2, '0');
+    }
+
+    document.querySelector('[data-carousel="previous"]')?.addEventListener('click', () => {
+      showSlide(currentSlide - 1);
+    });
+    document.querySelector('[data-carousel="next"]')?.addEventListener('click', () => {
+      showSlide(currentSlide + 1);
+    });
+  </script>
+</SiteLayout>

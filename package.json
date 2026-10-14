@@ -1,0 +1,18 @@
+{
+  "name": "casaluzfilms",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "cms:proxy": "BIND_HOST=127.0.0.1 decap-server"
+  },
+  "dependencies": {
+    "astro": "^7.3.8"
+  },
+  "devDependencies": {
+    "decap-server": "^3.11.3"
+  }
+}

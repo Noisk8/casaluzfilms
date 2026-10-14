@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import SiteLayout from '../../components/SiteLayout.astro';
+
+const films = await getCollection('films');
+const sortedFilms = films.sort((a, b) => (b.data.year ?? 0) - (a.data.year ?? 0));
+---
+
+<SiteLayout title="Films" description="Películas producidas por Casa Luz Films.">
+  <section class="page-heading">
+    <h1>Films</h1>
+  </section>
+  <section class="catalogue" aria-label="Filmografía">
+    {sortedFilms.length ? (
+      <div class="film-grid">
+        {sortedFilms.map((film) => (
+          <a class="film-card" href={`/films/${film.id}/`}>
+            <div class="film-image">
+              {film.data.poster ? (
+                <img src={film.data.poster} alt="" loading="lazy" />
+              ) : <div class="image-placeholder" aria-hidden="true">CL</div>}
+            </div>
+            <h2>{film.data.title}</h2>
+            <p>Dirección: {film.data.director}{film.data.year ? ` · ${film.data.year}` : ''}</p>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <p class="empty-state">Estamos preparando nuestra filmografía. Pronto encontrarás aquí nuestras películas.</p>
+    )}
+  </section>
+</SiteLayout>

@@ -1,0 +1,82 @@
+---
+import '../styles.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Casa Luz Films: historias para la pantalla.' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#ffffff" />
+    <title>{title} · Casa Luz Films</title>
+  </head>
+  <body class={Astro.url.pathname === '/' ? 'landing-page' : undefined}>
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+    <header class="site-header">
+      <a class="wordmark" href="/" aria-label="Casa Luz Films, inicio">(casa luz)</a>
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-menu"
+        aria-label="Abrir menú"
+      >
+        <span></span><span></span><span></span>
+      </button>
+    </header>
+    <nav class="menu-panel" id="site-menu" aria-label="Navegación principal" inert>
+      <button class="menu-close" type="button" aria-label="Cerrar menú">×</button>
+      <div class="menu-links">
+        <a href="/about/">About</a>
+        <a href="/films/">Films</a>
+        <a href="/team/">Team</a>
+        <a href="/contact/">Contact</a>
+      </div>
+    </nav>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <p>Casa Luz Films <span>·</span> Historias para la pantalla</p>
+      <div class="footer-links">
+        <a href="/contact/">Contacto</a>
+        <a href="/admin/index.html">Administración</a>
+      </div>
+    </footer>
+    <script>
+      const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+      const closeButton = document.querySelector<HTMLButtonElement>('.menu-close');
+      const menu = document.querySelector<HTMLElement>('.menu-panel');
+
+      function setMenuOpen(open: boolean) {
+        if (!toggle || !menu) return;
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+        menu.inert = !open;
+        menu.classList.toggle('is-open', open);
+        document.body.classList.toggle('menu-open', open);
+        if (open) closeButton?.focus();
+        else toggle.focus();
+      }
+
+      toggle?.addEventListener('click', () => {
+        setMenuOpen(toggle.getAttribute('aria-expanded') !== 'true');
+      });
+      closeButton?.addEventListener('click', () => setMenuOpen(false));
+      menu?.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => setMenuOpen(false));
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') setMenuOpen(false);
+      });
+    </script>
+  </body>
+</html>

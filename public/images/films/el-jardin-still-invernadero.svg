@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1">
+      <stop stop-color="#a9b9b2"/>
+      <stop offset="1" stop-color="#52675f"/>
+    </linearGradient>
+    <linearGradient id="glass" x2="1" y2="1">
+      <stop stop-color="#bdd0c5" stop-opacity=".18"/>
+      <stop offset=".55" stop-color="#d6b77f" stop-opacity=".25"/>
+      <stop offset="1" stop-color="#263d34" stop-opacity=".65"/>
+    </linearGradient>
+    <linearGradient id="floor" x2="0" y2="1">
+      <stop stop-color="#566c54"/>
+      <stop offset="1" stop-color="#172b26"/>
+    </linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="18"/></filter>
+  </defs>
+  <rect width="1200" height="800" fill="#26382f"/>
+  <rect x="80" y="40" width="1040" height="580" fill="url(#sky)"/>
+  <path d="M80 445 300 300l160 105 190-235 210 245 140-135 120 165v155H80Z" fill="#52675e"/>
+  <path d="m80 455 245-112 161 115 222-190 206 198 133-107 153 116v145H80Z" fill="#738576" opacity=".8"/>
+  <g fill="#d3c693" opacity=".5" filter="url(#soft)">
+    <circle cx="760" cy="300" r="56"/>
+    <circle cx="745" cy="300" r="22"/>
+  </g>
+  <rect x="80" y="40" width="1040" height="580" fill="url(#glass)"/>
+  <path d="M80 40h1040v580H80zM120 80v500m250-500v500m250-500v500m250-500v500m210-500v500M80 230h1040M80 425h1040" fill="none" stroke="#26372f" stroke-width="15" opacity=".9"/>
+  <path d="M0 610h1200v190H0z" fill="url(#floor)"/>
+  <path d="M0 667q180-60 360 0t360 0q220-62 480 8v125H0z" fill="#21362b"/>
+  <g fill="#243d2b" stroke="#182c24" stroke-width="8">
+    <path d="M80 695q15-185 84-290 14 120 4 290zm67-49q35-180 128-246-20 123-75 266z"/>
+    <path d="M180 725q7-118 70-209 16 94 11 209zm700-13q20-188 112-280 4 158-38 280zm91 12q47-171 151-214-43 122-103 224z"/>
+  </g>
+  <g stroke="#c9d8ce" stroke-width="3" opacity=".52">
+    <path d="m155 80-95 260m225-270-94 250m260-235-100 275m285-278-98 260m301-260-94 258m280-246-92 250"/>
+  </g>
+  <path d="M0 775q220-75 430-8t405 0q180-52 365 6" fill="none" stroke="#bac39e" stroke-width="5" opacity=".5"/>
+</svg>

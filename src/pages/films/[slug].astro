@@ -1,0 +1,78 @@
+---
+import { getCollection } from 'astro:content';
+import SiteLayout from '../../components/SiteLayout.astro';
+
+export async function getStaticPaths() {
+  const films = await getCollection('films');
+  return films.map((film) => ({ params: { slug: film.id }, props: { film } }));
+}
+
+const { film } = Astro.props;
+const { data } = film;
+const isRainGarden = film.id === 'el-jardin-de-la-lluvia';
+const conceptStills = isRainGarden
+  ? [
+      '/images/films/el-jardin-still-invernadero.svg',
+      '/images/films/el-jardin-still-carta.svg',
+      '/images/films/el-jardin-still-montana.svg',
+    ]
+  : [];
+const galleryImages = data.stills.length > 0 ? data.stills : conceptStills;
+const trailerUrl = data.trailerUrl?.match(/^https:\/\/(www\.)?(youtube\.com\/embed\/|player\.vimeo\.com\/video\/)/)
+  ? data.trailerUrl
+  : undefined;
+---
+
+<SiteLayout title={data.title} description={data.synopsis ?? `${data.title}, película de Casa Luz Films.`}>
+  <article class="film-page">
+    <header class="page-heading film-page-heading">
+      <p class="eyebrow">Película {data.year ? `· ${data.year}` : ''}</p>
+      <h1>{data.title}</h1>
+    </header>
+    {trailerUrl ? (
+      <div class="trailer-frame">
+        <iframe
+          src={trailerUrl}
+          title={`Tráiler de ${data.title}`}
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+    ) : data.poster ? (
+      <figure class="film-key-art">
+        <img src={data.poster} alt={`Imagen conceptual de ${data.title}`} />
+        {isRainGarden && <figcaption>Boceto visual · imagen conceptual</figcaption>}
+      </figure>
+    ) : null}
+    <section class="film-copy">
+      {data.synopsis && <p class="film-synopsis">{data.synopsis}</p>}
+      <dl class="film-credits">
+        {data.originalTitle && <div><dt>Título original</dt><dd>{data.originalTitle}</dd></div>}
+        <div><dt>Dirección</dt><dd>{data.director}</dd></div>
+        {data.screenwriter && <div><dt>Guion</dt><dd>{data.screenwriter}</dd></div>}
+        {data.producers.length > 0 && <div><dt>Producción</dt><dd>{data.producers.join(', ')}</dd></div>}
+        {data.coProducers.length > 0 && <div><dt>Coproducción</dt><dd>{data.coProducers.join(', ')}</dd></div>}
+        {data.sales && <div><dt>Ventas</dt><dd>{data.sales}</dd></div>}
+      </dl>
+      {data.imdbUrl && <a class="text-link" href={data.imdbUrl} target="_blank" rel="noreferrer">Más información en IMDb <span>↗</span></a>}
+    </section>
+    {galleryImages.length > 0 && (
+      <section class="film-gallery" aria-label="Bocetos visuales de la película">
+        {isRainGarden && <h2>El jardín, bajo la lluvia</h2>}
+        <div class="film-stills">
+          {galleryImages.map((still, index) => (
+            <figure class="film-still">
+              <img src={still} alt={`Boceto conceptual ${index + 1} de ${data.title}`} loading="lazy" />
+              {isRainGarden && (
+                <figcaption>{['El invernadero', 'Las cartas', 'La montaña'][index]}</figcaption>
+              )}
+            </figure>
+          ))}
+        </div>
+        {isRainGarden && <p class="concept-note">Imágenes conceptuales creadas para este boceto de página.</p>}
+      </section>
+    )}
+    <a class="back-link" href="/films/">← Volver a Films</a>
+  </article>
+</SiteLayout>

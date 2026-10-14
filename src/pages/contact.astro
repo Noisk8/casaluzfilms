@@ -1,0 +1,20 @@
+---
+import { getCollection } from 'astro:content';
+import SiteLayout from '../components/SiteLayout.astro';
+
+const pages = await getCollection('pages');
+const contact = pages.find((page) => page.id === 'contact');
+---
+
+<SiteLayout title={contact?.data.title ?? 'Contact'}>
+  <section class="page-heading"><h1>{contact?.data.title ?? 'Contact'}</h1></section>
+  <section class="contact-content">
+    {contact?.data.intro && <p class="about-lead">{contact.data.intro}</p>}
+    <address>
+      {contact?.data.address && <p>{contact.data.address}</p>}
+      {contact?.data.email && <p><a href={`mailto:${contact.data.email}`}>{contact.data.email}</a></p>}
+      {contact?.data.phone && <p><a href={`tel:${contact.data.phone}`}>{contact.data.phone}</a></p>}
+    </address>
+    {!contact && <p class="empty-state">Los datos de contacto se publicarán pronto.</p>}
+  </section>
+</SiteLayout>

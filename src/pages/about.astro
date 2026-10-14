@@ -1,0 +1,17 @@
+---
+import { getCollection } from 'astro:content';
+import SiteLayout from '../components/SiteLayout.astro';
+
+const pages = await getCollection('pages');
+const about = pages.find((page) => page.id === 'about');
+---
+
+<SiteLayout title={about?.data.title ?? 'About'}>
+  <section class="page-heading"><h1>{about?.data.title ?? 'About'}</h1></section>
+  <article class="about-content">
+    {about?.data.intro && <p class="about-lead">{about.data.intro}</p>}
+    {about?.data.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+    {!about && <p class="empty-state">La historia de Casa Luz Films se publicará pronto.</p>}
+    <a class="text-link" href="/films/">Explora nuestras películas <span>↗</span></a>
+  </article>
+</SiteLayout>

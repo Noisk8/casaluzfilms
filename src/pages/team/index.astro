@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import SiteLayout from '../../components/SiteLayout.astro';
+
+const people = (await getCollection('people')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<SiteLayout title="Team" description="Conoce al equipo de Casa Luz Films.">
+  <section class="page-heading"><h1>Team</h1></section>
+  <section class="team-grid" aria-label="Equipo">
+    {people.length ? people.map((person) => (
+      <a class="person-card" href={`/team/${person.id}/`}>
+        <div class="person-image">
+          {person.data.portrait
+            ? <img src={person.data.portrait} alt="" loading="lazy" />
+            : <div class="image-placeholder" aria-hidden="true">CL</div>}
+        </div>
+        <h2>{person.data.name}</h2>
+        <p>{person.data.role}</p>
+      </a>
+    )) : <p class="empty-state">Pronto presentaremos al equipo de Casa Luz Films.</p>}
+  </section>
+</SiteLayout>
