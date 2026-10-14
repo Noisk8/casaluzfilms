@@ -2,10 +2,8 @@ backend:
   name: github
   repo: Noisk8/casaluzfilms
   branch: main
-  base_url: https://oauth.TU-DOMINIO.com
+  base_url: https://oauth-ivbw8fhjh51v3ec3vkiyy6pr.181.135.91.136.sslip.io
   auth_endpoint: auth
-
-local_backend: true
 
 media_folder: public/images
 public_folder: /images

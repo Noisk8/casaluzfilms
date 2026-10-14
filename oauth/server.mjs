@@ -77,6 +77,22 @@ function verifyState(state, secret, allowedOrigins, now = Date.now()) {
   }
 }
 
+function safeEqual(left, right) {
+  const leftBuffer = Buffer.from(left);
+  const rightBuffer = Buffer.from(right);
+  return leftBuffer.length === rightBuffer.length && timingSafeEqual(leftBuffer, rightBuffer);
+}
+
+function parseCookies(cookieHeader) {
+  return Object.fromEntries(
+    (cookieHeader ?? '').split(';').map((part) => {
+      const separator = part.indexOf('=');
+      if (separator < 0) return ['', ''];
+      return [part.slice(0, separator).trim(), part.slice(separator + 1).trim()];
+    }).filter(([name]) => name),
+  );
+}
+
 function jsonResponse(status, payload) {
   return new Response(JSON.stringify(payload), {
     status,
@@ -155,10 +171,11 @@ export function createHandler({ env, fetchImpl = fetch, now = Date.now }) {
       const scopes = parseScopes(url.searchParams.get('scope'));
       if (!scopes) return jsonResponse(400, { error: 'Unsupported OAuth scope' });
 
+      const nonce = randomBytes(32).toString('base64url');
       const state = signState({
         origin: siteOrigin,
         createdAt: now(),
-        nonce: randomBytes(32).toString('base64url'),
+        nonce,
       }, config.stateSecret);
       const authorizeUrl = new URL('https://github.com/login/oauth/authorize');
       authorizeUrl.searchParams.set('client_id', config.clientId);
@@ -169,6 +186,7 @@ export function createHandler({ env, fetchImpl = fetch, now = Date.now }) {
         status: 302,
         headers: {
           Location: authorizeUrl.toString(),
+          'Set-Cookie': `decap_oauth_state=${nonce}; Path=/callback; Max-Age=600; Secure; HttpOnly; SameSite=None`,
           'Cache-Control': 'no-store',
           'Referrer-Policy': 'no-referrer',
         },
@@ -183,14 +201,17 @@ export function createHandler({ env, fetchImpl = fetch, now = Date.now }) {
         config.allowedOrigins,
         now(),
       );
-      if (!state) return jsonResponse(400, { error: 'Invalid or expired OAuth state' });
-      if (url.searchParams.get('provider') !== 'github') {
-        return popupResponse('error', state.origin, 'authorization:github:error:{"message":"Unsupported OAuth provider"}');
+      const cookieNonce = parseCookies(request.headers.get('cookie')).decap_oauth_state;
+      if (!state || !cookieNonce || !safeEqual(state.nonce, cookieNonce)) {
+        return jsonResponse(400, { error: 'Invalid or expired OAuth state' });
       }
+      const clearStateCookie = 'decap_oauth_state=; Path=/callback; Max-Age=0; Secure; HttpOnly; SameSite=None';
 
       const code = url.searchParams.get('code');
       if (!code || code.length > 4096 || url.searchParams.has('error')) {
-        return popupResponse('error', state.origin, 'authorization:github:error:{"message":"GitHub authorization was not completed"}');
+        const response = popupResponse('error', state.origin, 'authorization:github:error:{"message":"GitHub authorization was not completed"}');
+        response.headers.set('Set-Cookie', clearStateCookie);
+        return response;
       }
 
       let tokenResponse;
@@ -210,27 +231,37 @@ export function createHandler({ env, fetchImpl = fetch, now = Date.now }) {
           signal: AbortSignal.timeout(10_000),
         });
       } catch {
-        return popupResponse('error', state.origin, 'authorization:github:error:{"message":"Could not contact GitHub"}');
+        const response = popupResponse('error', state.origin, 'authorization:github:error:{"message":"Could not contact GitHub"}');
+        response.headers.set('Set-Cookie', clearStateCookie);
+        return response;
       }
 
       if (!tokenResponse.ok) {
-        return popupResponse('error', state.origin, 'authorization:github:error:{"message":"GitHub rejected the authorization request"}');
+        const response = popupResponse('error', state.origin, 'authorization:github:error:{"message":"GitHub rejected the authorization request"}');
+        response.headers.set('Set-Cookie', clearStateCookie);
+        return response;
       }
       let tokenData;
       try {
         tokenData = await tokenResponse.json();
       } catch {
-        return popupResponse('error', state.origin, 'authorization:github:error:{"message":"GitHub returned an invalid response"}');
+        const response = popupResponse('error', state.origin, 'authorization:github:error:{"message":"GitHub returned an invalid response"}');
+        response.headers.set('Set-Cookie', clearStateCookie);
+        return response;
       }
       if (typeof tokenData.access_token !== 'string' || !tokenData.access_token) {
-        return popupResponse('error', state.origin, 'authorization:github:error:{"message":"GitHub did not return an access token"}');
+        const response = popupResponse('error', state.origin, 'authorization:github:error:{"message":"GitHub did not return an access token"}');
+        response.headers.set('Set-Cookie', clearStateCookie);
+        return response;
       }
 
-      return popupResponse(
+      const response = popupResponse(
         'success',
         state.origin,
         `authorization:github:success:${JSON.stringify({ token: tokenData.access_token })}`,
       );
+      response.headers.set('Set-Cookie', clearStateCookie);
+      return response;
     }
 
     return jsonResponse(404, { error: 'Not found' });
@@ -245,7 +276,11 @@ function start() {
     throw new Error('PORT must be a valid TCP port');
   }
   const server = createServer((request, response) => {
-    void handler(request).then(async (result) => {
+    const incoming = new Request(new URL(request.url, config.publicUrl), {
+      method: request.method,
+      headers: request.headers,
+    });
+    void handler(incoming).then(async (result) => {
       response.writeHead(result.status, Object.fromEntries(result.headers));
       response.end(await result.arrayBuffer());
     }).catch((error) => {

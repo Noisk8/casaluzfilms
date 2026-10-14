@@ -3,3 +3,5 @@
 dist
 node_modules
 npm-debug.log
+public/admin/local.html
+public/admin/config.local.yml

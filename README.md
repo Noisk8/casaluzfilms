@@ -18,9 +18,9 @@ En otra terminal, desde la raíz del repositorio, inicia el proxy local de Decap
 npm run cms:proxy
 ```
 
-Abre `http://localhost:4321/admin/index.html` para editar contenido. En modo
-local, Decap guarda los cambios en los archivos del repositorio; el proxy debe
-estar activo para usar el CMS.
+Abre `http://localhost:4321/admin/local.html` para editar contenido. Esa página
+usa la configuración local de Decap y guarda los cambios mediante el proxy en
+los archivos del repositorio. El proxy debe estar activo.
 
 ## Contenido
 
@@ -41,7 +41,7 @@ sirve con Nginx en el puerto interno `80`; configura ese puerto como el puerto
 del servicio web en Coolify. La terminación HTTPS y el dominio se configuran en
 Coolify. Cada publicación genera de nuevo el sitio estático a partir del
 contenido actual del repositorio. El panel `/admin/` se incluye en la imagen y
-queda disponible en `https://TU-DOMINIO/admin/`.
+queda disponible en `https://ivbw8fhjh51v3ec3vkiyy6pr.181.135.91.136.sslip.io/admin/`.
 
 ## Acceso al CMS
 
@@ -54,31 +54,32 @@ El repositorio también incluye un servicio OAuth para el flujo seguro con GitHu
 En Coolify crea **dos recursos desde el mismo repositorio y rama**:
 
 1. **Frontend:** Dockerfile `Dockerfile` en la raíz, puerto interno `80`, con tu
-   dominio público.
+   dominio `ivbw8fhjh51v3ec3vkiyy6pr.181.135.91.136.sslip.io`.
 2. **OAuth:** Dockerfile `oauth/Dockerfile`, contexto raíz del repositorio,
-   puerto interno `8080`. Asígnale un subdominio HTTPS independiente, por
-   ejemplo `oauth.tudominio.com`.
+   puerto interno `8080`. Asígnale el dominio
+   `oauth-ivbw8fhjh51v3ec3vkiyy6pr.181.135.91.136.sslip.io`.
 
 En el recurso OAuth configura estas variables. Marca las credenciales como
 secretos:
 
 - `GITHUB_CLIENT_ID` y `GITHUB_CLIENT_SECRET`: credenciales de la GitHub OAuth
   App.
-- `OAUTH_PUBLIC_URL`: URL HTTPS pública del servicio OAuth, sin barra final.
-- `ALLOWED_SITE_ORIGINS`: origen exacto del frontend, por ejemplo
-  `https://tudominio.com` (sin ruta).
+- `OAUTH_PUBLIC_URL`: `https://oauth-ivbw8fhjh51v3ec3vkiyy6pr.181.135.91.136.sslip.io`
+- `ALLOWED_SITE_ORIGINS`: `https://ivbw8fhjh51v3ec3vkiyy6pr.181.135.91.136.sslip.io`
 - `STATE_SECRET`: secreto aleatorio de al menos 32 bytes para firmar y validar
   el estado del flujo OAuth.
 
 Crea la GitHub OAuth App en **Settings → Developer settings → OAuth Apps**:
 
-- **Homepage URL:** valor de `OAUTH_PUBLIC_URL`.
-- **Authorization callback URL:** `${OAUTH_PUBLIC_URL}/callback`.
+- **Homepage URL:** `https://oauth-ivbw8fhjh51v3ec3vkiyy6pr.181.135.91.136.sslip.io`
+- **Authorization callback URL:**
+  `https://oauth-ivbw8fhjh51v3ec3vkiyy6pr.181.135.91.136.sslip.io/callback`
 
-En `public/admin/config.yml`, reemplaza
-`https://oauth.TU-DOMINIO.com` por el valor de `OAUTH_PUBLIC_URL`. Guarda y
-despliega el frontend. No pongas el Client Secret ni `STATE_SECRET` en el
-frontend, en `config.yml` ni en Git.
+El `base_url` del CMS ya está configurado con el dominio OAuth previsto.
+Confirma que Coolify asigne esos dominios y habilite HTTPS antes de crear la
+GitHub OAuth App. Si Coolify genera otros dominios, actualiza estas variables,
+el callback y `base_url` para que coincidan. No pongas el Client Secret ni
+`STATE_SECRET` en el frontend, en `config.yml` ni en Git.
 
 Las cuentas que entren al CMS necesitan permiso de escritura en
 `Noisk8/casaluzfilms`. Protege el acceso al servicio OAuth y usa HTTPS en los dos
@@ -88,9 +89,10 @@ operaciones de contenido las hace Decap directamente contra la API de GitHub.
 Para generar `STATE_SECRET`, puedes usar localmente `openssl rand -hex 32` y
 pegar el resultado como secreto en Coolify. No compartas ese valor.
 
-Para desarrollo local, `local_backend: true` permite usar el proxy del proyecto:
-ejecuta `npm run dev` y, en otra terminal, `npm run cms:proxy`; abre
-`http://localhost:4321/admin/index.html`.
+En desarrollo local, `local_backend: true` está aislado a `/admin/local.html`;
+ejecuta `npm run dev` y, en otra terminal, `npm run cms:proxy`. La configuración
+local y su página se excluyen de la imagen de Coolify para que el CMS publicado
+siempre use OAuth y GitHub.
 
 ## Comandos
 

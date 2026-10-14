@@ -1,0 +1,175 @@
+backend:
+  name: git-gateway
+  branch: main
+
+local_backend: true
+
+media_folder: public/images
+public_folder: /images
+
+logo_url: /favicon.svg
+
+collections:
+  - name: films
+    label: Películas
+    label_singular: Película
+    folder: src/content/films
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    summary: "{{title}} · {{director}}"
+    fields:
+      - label: Título
+        name: title
+        widget: string
+      - label: Dirección
+        name: director
+        widget: string
+      - label: Año
+        name: year
+        widget: number
+        required: false
+        value_type: int
+      - label: Afiche
+        name: poster
+        widget: image
+        required: false
+      - label: Sinopsis
+        name: synopsis
+        widget: text
+        required: false
+      - label: Destacada
+        name: featured
+        widget: boolean
+        default: false
+      - label: Título original
+        name: originalTitle
+        widget: string
+        required: false
+      - label: Guion
+        name: screenwriter
+        widget: string
+        required: false
+      - label: Productores
+        name: producers
+        widget: list
+        required: false
+      - label: Coproductores
+        name: coProducers
+        widget: list
+        required: false
+      - label: Ventas
+        name: sales
+        widget: string
+        required: false
+      - label: URL de inserción del tráiler
+        name: trailerUrl
+        widget: string
+        required: false
+        hint: Usa una URL de inserción de YouTube o Vimeo.
+      - label: URL de IMDb
+        name: imdbUrl
+        widget: string
+        required: false
+      - label: Imágenes de galería
+        name: stills
+        widget: list
+        required: false
+        field:
+          label: Imagen
+          name: image
+          widget: image
+  - name: pages
+    label: Páginas
+    files:
+      - label: Portada
+        name: home
+        file: src/content/pages/home.md
+        fields:
+          - label: Título
+            name: title
+            widget: string
+          - label: Texto de portada
+            name: intro
+            widget: text
+          - label: Texto de presentación
+            name: paragraphs
+            widget: list
+            required: false
+      - label: About
+        name: about
+        file: src/content/pages/about.md
+        fields:
+          - label: Título
+            name: title
+            widget: string
+          - label: Introducción
+            name: intro
+            widget: text
+          - label: Párrafos
+            name: paragraphs
+            widget: list
+            field:
+              label: Párrafo
+              name: paragraph
+              widget: text
+      - label: Contact
+        name: contact
+        file: src/content/pages/contact.md
+        fields:
+          - label: Título
+            name: title
+            widget: string
+          - label: Introducción
+            name: intro
+            widget: text
+          - label: Dirección
+            name: address
+            widget: text
+            required: false
+          - label: Correo
+            name: email
+            widget: string
+            required: false
+          - label: Teléfono
+            name: phone
+            widget: string
+            required: false
+  - name: people
+    label: Team
+    label_singular: Integrante
+    folder: src/content/people
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    summary: "{{name}} · {{role}}"
+    fields:
+      - label: Nombre
+        name: name
+        widget: string
+      - label: Cargo
+        name: role
+        widget: string
+      - label: Retrato
+        name: portrait
+        widget: image
+        required: false
+      - label: Biografía
+        name: bio
+        widget: list
+        required: false
+        field:
+          label: Párrafo
+          name: paragraph
+          widget: text
+      - label: Correo
+        name: email
+        widget: string
+        required: false
+      - label: Orden
+        name: order
+        widget: number
+        value_type: int
+        default: 100
