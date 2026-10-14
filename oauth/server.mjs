@@ -276,13 +276,13 @@ function start() {
     throw new Error('PORT must be a valid TCP port');
   }
   const server = createServer((request, response) => {
-    const incoming = new Request(new URL(request.url, config.publicUrl), {
+    const incoming = new Request(new URL(request.url, env.OAUTH_PUBLIC_URL), {
       method: request.method,
       headers: request.headers,
     });
     void handler(incoming).then(async (result) => {
       response.writeHead(result.status, Object.fromEntries(result.headers));
-      response.end(await result.arrayBuffer());
+      response.end(Buffer.from(await result.arrayBuffer()));
     }).catch((error) => {
       console.error('OAuth request failed:', error.message);
       response.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
