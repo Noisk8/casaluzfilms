@@ -19,6 +19,14 @@ const { title, description = 'Casa Luz Films: historias para la pantalla.' } = A
     <title>{title} · Casa Luz Films</title>
   </head>
   <body class={Astro.url.pathname === '/' ? 'landing-page' : undefined}>
+    <dialog class="site-intro" aria-labelledby="site-intro-title" data-site-intro>
+      <div class="intro-light" aria-hidden="true"></div>
+      <div class="intro-content">
+        <p class="intro-kicker">Una historia está por comenzar</p>
+        <h2 id="site-intro-title">Casa Luz Films</h2>
+        <button class="intro-enter" type="button" data-intro-enter>Entrar <span aria-hidden="true">↗</span></button>
+      </div>
+    </dialog>
     <a class="skip-link" href="#main">Saltar al contenido</a>
     <header class="site-header">
       <a class="wordmark" href="/" aria-label="Casa Luz Films, inicio">(casa luz)</a>
@@ -36,6 +44,7 @@ const { title, description = 'Casa Luz Films: historias para la pantalla.' } = A
       <button class="menu-close" type="button" aria-label="Cerrar menú">×</button>
       <div class="menu-links">
         <a href="/about/">About</a>
+        <a href="/fundacion/">Fundación</a>
         <a href="/films/">Films</a>
         <a href="/team/">Team</a>
         <a href="/contact/">Contact</a>
@@ -52,6 +61,94 @@ const { title, description = 'Casa Luz Films: historias para la pantalla.' } = A
       </div>
     </footer>
     <script>
+      const introDialog = document.querySelector<HTMLDialogElement>('[data-site-intro]');
+      const enterButton = document.querySelector<HTMLButtonElement>('[data-intro-enter]');
+      const introKey = 'casaluz-intro-seen-v3';
+      let introSeen = false;
+      try { introSeen = sessionStorage.getItem(introKey) === '1'; } catch { /* Storage may be unavailable. */ }
+
+      if (introDialog && !introSeen) introDialog.showModal();
+
+      function enterSite() {
+        if (!introDialog?.open || introDialog.classList.contains('is-leaving')) return;
+        try { sessionStorage.setItem(introKey, '1'); } catch { /* Continue without storage. */ }
+        introDialog.classList.add('is-leaving');
+        const duration = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 900;
+        window.setTimeout(() => {
+          introDialog.close();
+          introDialog.classList.remove('is-leaving');
+          document.querySelector<HTMLElement>('.wordmark')?.focus();
+          startReveals();
+        }, duration);
+      }
+
+      enterButton?.addEventListener('click', enterSite);
+      introDialog?.addEventListener('cancel', (event) => {
+        event.preventDefault();
+        enterSite();
+      });
+
+      let revealsStarted = false;
+      function startReveals() {
+        if (revealsStarted || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        revealsStarted = true;
+
+        const selectors = [
+          '.site-header > *',
+          '.hero-slide.is-active .hero-copy > *',
+          '.carousel-controls',
+          '.hero-empty > *',
+          '.home-intro > *',
+          '.home-films-heading > *',
+          '.home-films .film-card',
+          '.home-films > .text-link',
+          '.page-heading > *',
+          '.about-content > *',
+          '.contact-content > *',
+          '.contact-content address > *',
+          '.catalogue .film-card',
+          '.team-grid .person-card',
+          '.film-page > .trailer-frame',
+          '.film-page > .film-key-art',
+          '.film-copy > *',
+          '.film-gallery > *',
+          '.film-stills > *',
+          '.person-page > .person-portrait',
+          '.person-page > .person-role',
+          '.person-bio > *',
+          '.person-page > .text-link',
+          '.person-page > .back-link',
+          '.site-footer > *',
+        ];
+        const targets = [...document.querySelectorAll<HTMLElement>(selectors.join(', '))];
+        const groupCounts = new Map<Element, number>();
+
+        targets.forEach((element) => {
+          const parent = element.parentElement;
+          const index = parent ? (groupCounts.get(parent) ?? 0) : 0;
+          if (parent) groupCounts.set(parent, index + 1);
+          element.style.setProperty('--reveal-delay', `${Math.min(index * 75, 300)}ms`);
+          element.classList.add('reveal-item');
+        });
+
+        if (!('IntersectionObserver' in window)) {
+          targets.forEach((element) => element.classList.add('is-visible'));
+          return;
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          });
+        }, { threshold: 0.06, rootMargin: '0px 0px -8% 0px' });
+
+        requestAnimationFrame(() => targets.forEach((element) => observer.observe(element)));
+      }
+
+      if (introSeen) startReveals();
+
       const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
       const closeButton = document.querySelector<HTMLButtonElement>('.menu-close');
       const menu = document.querySelector<HTMLElement>('.menu-panel');

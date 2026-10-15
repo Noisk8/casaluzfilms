@@ -10,7 +10,8 @@
     "cms:proxy": "BIND_HOST=127.0.0.1 decap-server"
   },
   "dependencies": {
-    "astro": "^7.3.8"
+    "astro": "^7.3.8",
+    "three": "^0.186.1"
   },
   "devDependencies": {
     "decap-server": "^3.11.3"

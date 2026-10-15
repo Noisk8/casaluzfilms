@@ -39,6 +39,157 @@ button {
   font: inherit;
 }
 
+.site-intro {
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: #17120d;
+  color: #fff;
+  text-align: center;
+}
+
+.site-intro::backdrop {
+  background: #17120d;
+}
+
+.site-intro.is-leaving {
+  animation: intro-out 900ms ease-in forwards;
+}
+
+.intro-light {
+  position: absolute;
+  z-index: 1;
+  inset: -40%;
+  background: radial-gradient(circle at 50% 50%, #fff7d8 0, #f8e3a8 12%, rgb(215 160 77 / 35%) 35%, transparent 60%);
+  opacity: 0;
+  transform: scale(.55);
+  pointer-events: none;
+}
+
+.site-intro[open] .intro-light {
+  animation: intro-glow 1.2s ease-out both;
+}
+
+.site-intro.is-leaving .intro-light {
+  animation: intro-flash 900ms ease-in forwards;
+}
+
+.intro-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  border: clamp(9px, 1.3vw, 20px) solid #30261c;
+  box-shadow: inset 0 0 0 2px #8c7150, inset 0 0 100px rgb(0 0 0 / 70%);
+}
+
+.intro-content::before {
+  position: absolute;
+  inset: 15px;
+  border: 1px solid rgb(255 223 165 / 28%);
+  content: '';
+  pointer-events: none;
+}
+
+.intro-content::after {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent 0 3px, rgb(0 0 0 / 7%) 3px 4px);
+  content: '';
+  pointer-events: none;
+}
+
+.site-intro.is-leaving .intro-content {
+  animation: lightbox-vanish 900ms ease-in forwards;
+}
+
+.intro-kicker,
+.site-intro h2,
+.intro-enter {
+  position: relative;
+  z-index: 3;
+}
+
+.site-intro.is-leaving .intro-kicker,
+.site-intro.is-leaving h2,
+.site-intro.is-leaving .intro-enter {
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.intro-kicker {
+  margin: 0 0 13px;
+  font-size: 12px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+
+.site-intro h2 {
+  margin: 0 0 38px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(38px, 7vw, 70px);
+  font-weight: 400;
+  letter-spacing: .04em;
+}
+
+.intro-enter {
+  min-width: 156px;
+  padding: 14px 22px;
+  border: 1px solid #f5e1b9;
+  background: rgb(20 15 10 / 55%);
+  color: #fff7df;
+  cursor: pointer;
+  font-size: 15px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  transition: background 220ms ease, color 220ms ease;
+}
+
+.intro-enter:hover,
+.intro-enter:focus-visible {
+  background: #fff7df;
+  color: #241b11;
+}
+
+.intro-enter span {
+  margin-left: 12px;
+}
+
+@keyframes intro-glow {
+  0%, 17%, 29% { opacity: .06; transform: scale(.55); }
+  10%, 23% { opacity: .5; }
+  60% { opacity: .3; }
+  100% { opacity: .55; transform: scale(1); }
+}
+
+@keyframes intro-flash {
+  0% { opacity: .55; transform: scale(1); }
+  55% { opacity: 1; transform: scale(1.8); }
+  100% { opacity: 1; transform: scale(3); }
+}
+
+@keyframes lightbox-vanish {
+  0%, 35% { opacity: 1; }
+  65%, 100% { opacity: 0; }
+}
+
+@keyframes intro-out {
+  0%, 60% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 .skip-link {
   position: fixed;
   z-index: 10;
@@ -149,6 +300,20 @@ button {
   opacity: 0.65;
 }
 
+.menu-panel.is-open .menu-links a {
+  animation: menu-link-in 420ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.menu-panel.is-open .menu-links a:nth-child(2) { animation-delay: 45ms; }
+.menu-panel.is-open .menu-links a:nth-child(3) { animation-delay: 90ms; }
+.menu-panel.is-open .menu-links a:nth-child(4) { animation-delay: 135ms; }
+.menu-panel.is-open .menu-links a:nth-child(5) { animation-delay: 180ms; }
+
+@keyframes menu-link-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .hero-carousel,
 .hero-empty {
   position: relative;
@@ -249,6 +414,26 @@ button {
 
 .text-link span {
   font-family: Arial, sans-serif;
+  transition: transform 250ms ease;
+}
+
+.text-link:hover span,
+.text-link:focus-visible span {
+  transform: translate(3px, -3px);
+}
+
+.reveal-item {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition:
+    opacity 720ms cubic-bezier(.22, 1, .36, 1),
+    transform 720ms cubic-bezier(.22, 1, .36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal-item.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
 }
 
 .light-link {
@@ -286,6 +471,50 @@ button {
   margin: 0 auto;
   padding: 105px 32px 112px;
   text-align: center;
+}
+
+.home-horizontal.is-horizontal {
+  height: 200vh;
+}
+
+.home-horizontal.is-horizontal .home-horizontal-viewport {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.home-horizontal.is-horizontal .home-horizontal-track {
+  display: flex;
+  width: 200vw;
+  height: 100%;
+  transform: translate3d(var(--horizontal-offset, 0px), 0, 0);
+  will-change: transform;
+}
+
+.home-horizontal.is-horizontal .home-intro,
+.home-horizontal.is-horizontal .home-films {
+  display: flex;
+  width: 100vw;
+  max-width: none;
+  height: 100%;
+  flex: 0 0 100vw;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0;
+}
+
+.home-horizontal.is-horizontal .home-intro {
+  align-items: center;
+  padding: 40px max(32px, calc((100vw - 900px) / 2));
+}
+
+.home-horizontal.is-horizontal .home-films {
+  padding: 40px max(7vw, calc((100vw - 1110px) / 2));
+}
+
+.home-horizontal.is-horizontal .home-films-heading {
+  margin-bottom: 48px;
 }
 
 .home-intro > p:not(.eyebrow) {
@@ -643,6 +872,12 @@ button {
   aspect-ratio: 1;
   background: #dedbd4;
   filter: grayscale(1);
+  transition: filter 350ms ease;
+}
+
+.person-card:hover .person-image,
+.person-card:focus-visible .person-image {
+  filter: grayscale(0);
 }
 
 .person-card h2 {
@@ -680,6 +915,11 @@ button {
   border-radius: 50%;
   background: #dedbd4;
   filter: grayscale(1);
+  transition: filter 350ms ease;
+}
+
+.person-portrait:hover {
+  filter: grayscale(0);
 }
 
 .person-role {
@@ -879,6 +1119,21 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .reveal-item {
+    opacity: 1;
+    transform: none;
+  }
+
+  .site-intro[open] .intro-light,
+  .site-intro.is-leaving,
+  .site-intro.is-leaving .intro-content {
+    animation: none;
+  }
+
+  .menu-panel.is-open .menu-links a {
+    animation: none;
+  }
+
   *,
   *::before,
   *::after {

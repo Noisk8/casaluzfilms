@@ -136,6 +136,23 @@ collections:
             name: phone
             widget: string
             required: false
+      - label: Fundación
+        name: fundacion
+        file: src/content/pages/fundacion.md
+        fields:
+          - label: Título
+            name: title
+            widget: string
+          - label: Introducción
+            name: intro
+            widget: text
+          - label: Párrafos
+            name: paragraphs
+            widget: list
+            field:
+              label: Párrafo
+              name: paragraph
+              widget: text
   - name: people
     label: Team
     label_singular: Integrante

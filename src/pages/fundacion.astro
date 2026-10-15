@@ -1,0 +1,15 @@
+---
+import { getCollection } from 'astro:content';
+import SiteLayout from '../components/SiteLayout.astro';
+
+const pages = await getCollection('pages');
+const foundation = pages.find((page) => page.id === 'fundacion');
+---
+
+<SiteLayout title={foundation?.data.title ?? 'Fundación'}>
+  <section class="page-heading"><h1>{foundation?.data.title ?? 'Fundación'}</h1></section>
+  <article class="about-content">
+    {foundation?.data.intro && <p class="about-lead">{foundation.data.intro}</p>}
+    {foundation?.data.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+  </article>
+</SiteLayout>
