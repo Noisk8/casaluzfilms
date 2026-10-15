@@ -149,6 +149,19 @@ button {
   aspect-ratio: 240 / 257.33;
 }
 
+.intro-logo-particles {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 800ms ease;
+}
+
+.intro-logo.is-formed .intro-logo-particles {
+  opacity: 0;
+}
+
 .intro-logo img {
   position: absolute;
   inset: 0;
@@ -156,19 +169,11 @@ button {
   width: 100%;
   height: 100%;
   opacity: 0;
-  will-change: transform, opacity;
+  transition: opacity 800ms ease;
 }
 
-.site-intro[open] .intro-logo-triangle {
-  animation: intro-triangle-in 1800ms cubic-bezier(.2,.8,.2,1) 250ms both;
-}
-
-.site-intro[open] .intro-logo-circle {
-  animation: intro-circle-in 1900ms cubic-bezier(.2,.8,.2,1) 900ms both;
-}
-
-.site-intro[open] .intro-logo-text {
-  animation: intro-text-in 1600ms cubic-bezier(.2,.8,.2,1) 1700ms both;
+.intro-logo.is-formed img {
+  opacity: 1;
 }
 
 .intro-logo-flare {
@@ -186,8 +191,8 @@ button {
   pointer-events: none;
 }
 
-.site-intro[open] .intro-logo-flare {
-  animation: intro-logo-flash 1100ms ease-out 2800ms both;
+.site-intro[open] .intro-logo:is(.is-formed, .is-assembled) .intro-logo-flare {
+  animation: intro-logo-flash 1100ms ease-out both;
 }
 
 .intro-enter {
@@ -221,21 +226,6 @@ button {
   10%, 23% { opacity: .22; }
   60% { opacity: .12; }
   100% { opacity: .18; transform: scale(1); }
-}
-
-@keyframes intro-triangle-in {
-  from { opacity: 0; transform: translate(-85%, 75%) rotate(-18deg) scale(.7); }
-  to { opacity: 1; transform: none; }
-}
-
-@keyframes intro-circle-in {
-  from { opacity: 0; transform: translate(85%, -65%) scale(.6); }
-  to { opacity: 1; transform: none; }
-}
-
-@keyframes intro-text-in {
-  from { opacity: 0; transform: translateY(90%) scale(.92); }
-  to { opacity: 1; transform: none; }
 }
 
 @keyframes intro-logo-flash {

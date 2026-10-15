@@ -19,7 +19,7 @@ const { title, description = 'Casa Luz Films: historias para la pantalla.' } = A
     <script is:inline>
       document.documentElement.classList.add('intro-gate');
       try {
-        if (sessionStorage.getItem('casaluz-intro-seen-v6') === '1') {
+        if (sessionStorage.getItem('casaluz-intro-seen-v11') === '1') {
           document.documentElement.classList.add('intro-seen');
         }
       } catch { /* Storage may be unavailable. */ }
@@ -32,6 +32,7 @@ const { title, description = 'Casa Luz Films: historias para la pantalla.' } = A
       <div class="intro-content">
         <h2 id="site-intro-title" class="intro-title">Casa Luz Films</h2>
         <div class="intro-logo" aria-hidden="true">
+          <canvas class="intro-logo-particles"></canvas>
           <img class="intro-logo-triangle" src="/images/logos/intro-triangle.svg" alt="" />
           <img class="intro-logo-circle" src="/images/logos/intro-circle.svg" alt="" />
           <img class="intro-logo-text" src="/images/logos/intro-text.svg" alt="" />
@@ -78,7 +79,8 @@ const { title, description = 'Casa Luz Films: historias para la pantalla.' } = A
     <script>
       const introDialog = document.querySelector<HTMLDialogElement>('[data-site-intro]');
       const enterButton = document.querySelector<HTMLButtonElement>('[data-intro-enter]');
-      const introKey = 'casaluz-intro-seen-v6';
+      const introLogo = document.querySelector<HTMLElement>('.intro-logo');
+      const introKey = 'casaluz-intro-seen-v11';
       let introSeen = false;
       try { introSeen = sessionStorage.getItem(introKey) === '1'; } catch { /* Storage may be unavailable. */ }
 
@@ -86,11 +88,180 @@ const { title, description = 'Casa Luz Films: historias para la pantalla.' } = A
 
       if (introDialog && !introSeen) {
         introDialog.showModal();
-        const readyDelay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 3900;
-        window.setTimeout(() => {
+        const finishIntro = () => {
           enterButton?.removeAttribute('disabled');
           introDialog.classList.add('is-ready');
-        }, readyDelay);
+        };
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          introLogo?.classList.add('is-formed');
+          finishIntro();
+        } else {
+          assembleIntroLogo().then(finishIntro).catch(() => {
+            introLogo?.classList.add('is-formed');
+            finishIntro();
+          });
+        }
+      }
+
+      async function assembleIntroLogo() {
+        const canvas = introLogo?.querySelector<HTMLCanvasElement>('canvas');
+        const images = [...(introLogo?.querySelectorAll<HTMLImageElement>('img') ?? [])];
+        const context = canvas?.getContext('2d');
+        if (!introLogo || !canvas || !context || images.length !== 3) throw new Error('Logo unavailable');
+
+        await Promise.all(images.map((img) => new Promise<void>((resolve, reject) => {
+          if (img.complete) {
+            if (img.naturalWidth) resolve();
+            else reject(new Error('Logo image unavailable'));
+            return;
+          }
+          img.addEventListener('load', () => resolve(), { once: true });
+          img.addEventListener('error', () => reject(new Error('Logo image unavailable')), { once: true });
+        })));
+        const width = Math.round(introLogo.getBoundingClientRect().width);
+        const height = Math.round(introLogo.getBoundingClientRect().height);
+        if (!width || !height) throw new Error('Logo has no size');
+        const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.round(width * pixelRatio);
+        canvas.height = Math.round(height * pixelRatio);
+        context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+
+        const sampleCanvas = document.createElement('canvas');
+        sampleCanvas.width = width;
+        sampleCanvas.height = height;
+        const sampleContext = sampleCanvas.getContext('2d', { willReadFrequently: true });
+        if (!sampleContext) throw new Error('Canvas unavailable');
+
+        const glowCanvas = document.createElement('canvas');
+        glowCanvas.width = glowCanvas.height = 20;
+        const glowContext = glowCanvas.getContext('2d');
+        if (!glowContext) throw new Error('Particle texture unavailable');
+        const glow = glowContext.createRadialGradient(10, 10, 0, 10, 10, 10);
+        glow.addColorStop(0, 'rgba(255, 255, 255, 1)');
+        glow.addColorStop(0.24, 'rgba(255, 249, 224, .8)');
+        glow.addColorStop(1, 'rgba(255, 235, 187, 0)');
+        glowContext.fillStyle = glow;
+        glowContext.fillRect(0, 0, 20, 20);
+
+        const stampCanvas = document.createElement('canvas');
+        stampCanvas.width = stampCanvas.height = 32;
+        const stampContext = stampCanvas.getContext('2d');
+        if (!stampContext) throw new Error('Particle stamp unavailable');
+        const stamp = stampContext.createRadialGradient(16, 16, 0, 16, 16, 16);
+        stamp.addColorStop(0, 'rgba(255, 255, 255, 1)');
+        stamp.addColorStop(0.55, 'rgba(255, 255, 255, 1)');
+        stamp.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        stampContext.fillStyle = stamp;
+        stampContext.fillRect(0, 0, 32, 32);
+
+        const masks = images.map(() => {
+          const surface = document.createElement('canvas');
+          surface.width = width;
+          surface.height = height;
+          const drawing = surface.getContext('2d');
+          if (!drawing) throw new Error('Layer mask unavailable');
+          return { surface, drawing };
+        });
+        const layerSurface = document.createElement('canvas');
+        layerSurface.width = width;
+        layerSurface.height = height;
+        const layerDrawing = layerSurface.getContext('2d');
+        if (!layerDrawing) throw new Error('Layer canvas unavailable');
+
+        const particles: Array<{ layer: number; x: number; y: number; startX: number; startY: number; curveX: number; curveY: number; delay: number; duration: number; alpha: number; size: number; drift: number; reveal: number }> = [];
+        const starts = [250, 900, 1700];
+        const durations = [1900, 1900, 1600];
+        images.forEach((img, layer) => {
+          sampleContext.clearRect(0, 0, width, height);
+          sampleContext.drawImage(img, 0, 0, width, height);
+          const pixels = sampleContext.getImageData(0, 0, width, height).data;
+          const candidates: Array<{ x: number; y: number; alpha: number }> = [];
+          const step = 2;
+          for (let y = 0; y < height; y += step) {
+            for (let x = 0; x < width; x += step) {
+              const alpha = pixels[(y * width + x) * 4 + 3] / 255;
+              if (alpha > 0.12) candidates.push({ x: x + Math.random() * step, y: y + Math.random() * step, alpha });
+            }
+          }
+          for (let index = candidates.length - 1; index > 0; index--) {
+            const swap = Math.floor(Math.random() * (index + 1));
+            [candidates[index], candidates[swap]] = [candidates[swap], candidates[index]];
+          }
+          const count = Math.min(candidates.length, layer === 2 ? 300 : layer === 1 ? 550 : 450);
+          for (let index = 0; index < count; index++) {
+            const point = candidates[index];
+            const scatter = Math.random();
+            const startX = layer === 0 ? point.x - width * (0.55 + scatter * 0.65)
+              : layer === 1 ? point.x + width * (0.55 + scatter * 0.65)
+              : point.x + (Math.random() - 0.5) * width * 0.7;
+            const startY = layer === 0 ? point.y + height * (0.4 + Math.random() * 0.6)
+              : layer === 1 ? point.y - height * (0.35 + Math.random() * 0.6)
+              : point.y + height * (0.5 + Math.random() * 0.45);
+            particles.push({
+              ...point, layer, startX, startY,
+              curveX: (Math.random() - 0.5) * width * 0.4,
+              curveY: (Math.random() - 0.5) * height * 0.22,
+              delay: starts[layer] + Math.random() * 260,
+              duration: durations[layer] + Math.random() * 180,
+              size: 3 + Math.random() * 3,
+              drift: Math.random() * Math.PI * 2,
+              reveal: 0,
+            });
+          }
+        });
+
+        await new Promise<void>((resolve) => {
+          const startTime = performance.now();
+          const stampRadius = Math.max(8, width / 24);
+          function draw(now: number) {
+            const elapsed = now - startTime;
+            for (const particle of particles) {
+              const progress = Math.min(1, Math.max(0, (elapsed - particle.delay) / particle.duration));
+              const settling = Math.min(1, Math.max(0, (progress - 0.68) / 0.32));
+              const reveal = settling * settling * (3 - 2 * settling);
+              if (reveal <= particle.reveal || particle.reveal >= 1) continue;
+              const drawing = masks[particle.layer].drawing;
+              drawing.globalAlpha = (reveal - particle.reveal) / (1 - particle.reveal);
+              drawing.drawImage(
+                stampCanvas,
+                particle.x - stampRadius,
+                particle.y - stampRadius,
+                stampRadius * 2,
+                stampRadius * 2,
+              );
+              drawing.globalAlpha = 1;
+              particle.reveal = reveal;
+            }
+            context!.clearRect(0, 0, width, height);
+            images.forEach((img, layer) => {
+              layerDrawing!.clearRect(0, 0, width, height);
+              layerDrawing!.drawImage(img, 0, 0, width, height);
+              layerDrawing!.globalCompositeOperation = 'destination-in';
+              layerDrawing!.drawImage(masks[layer].surface, 0, 0);
+              layerDrawing!.globalCompositeOperation = 'source-over';
+              context!.drawImage(layerSurface, 0, 0);
+            });
+            for (const particle of particles) {
+              if (particle.reveal >= 1) continue;
+              const progress = Math.min(1, Math.max(0, (elapsed - particle.delay) / particle.duration));
+              if (progress <= 0) continue;
+              const ease = progress * progress * (3 - 2 * progress);
+              const arc = Math.sin(Math.PI * ease);
+              const shimmer = Math.sin(elapsed * 0.009 + particle.drift) * (1 - ease) * 12;
+              const x = particle.startX + (particle.x - particle.startX) * ease + particle.curveX * arc + shimmer;
+              const y = particle.startY + (particle.y - particle.startY) * ease + particle.curveY * arc - shimmer * 0.45;
+              context!.globalAlpha = particle.alpha * Math.min(1, progress * 4) * (1 - particle.reveal);
+              context!.drawImage(glowCanvas, x - particle.size / 2, y - particle.size / 2, particle.size, particle.size);
+            }
+            context!.globalAlpha = 1;
+            if (elapsed < 3850) requestAnimationFrame(draw);
+            else resolve();
+          }
+          requestAnimationFrame(draw);
+        });
+
+        introLogo.classList.add('is-assembled');
+        await new Promise((resolve) => window.setTimeout(resolve, 1100));
       }
 
       function enterSite() {
