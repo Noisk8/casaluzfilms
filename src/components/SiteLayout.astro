@@ -22,14 +22,21 @@ const { title, description = 'Casa Luz Films: historias para la pantalla.' } = A
     <dialog class="site-intro" aria-labelledby="site-intro-title" data-site-intro>
       <div class="intro-light" aria-hidden="true"></div>
       <div class="intro-content">
-        <p class="intro-kicker">Una historia está por comenzar</p>
-        <h2 id="site-intro-title">Casa Luz Films</h2>
-        <button class="intro-enter" type="button" data-intro-enter>Entrar <span aria-hidden="true">↗</span></button>
+        <h2 id="site-intro-title" class="intro-title">Casa Luz Films</h2>
+        <div class="intro-logo" aria-hidden="true">
+          <img class="intro-logo-triangle" src="/images/logos/intro-triangle.svg" alt="" />
+          <img class="intro-logo-circle" src="/images/logos/intro-circle.svg" alt="" />
+          <img class="intro-logo-text" src="/images/logos/intro-text.svg" alt="" />
+          <span class="intro-logo-flare"></span>
+        </div>
+        <button class="intro-enter" type="button" data-intro-enter disabled>Entrar</button>
       </div>
     </dialog>
     <a class="skip-link" href="#main">Saltar al contenido</a>
     <header class="site-header">
-      <a class="wordmark" href="/" aria-label="Casa Luz Films, inicio">(casa luz)</a>
+      <a class="wordmark" href="/" aria-label="Casa Luz Films, inicio">
+        <img src="/images/logos/logo largo.svg" alt="Casa Luz Films" />
+      </a>
       <button
         class="menu-toggle"
         type="button"
@@ -63,11 +70,18 @@ const { title, description = 'Casa Luz Films: historias para la pantalla.' } = A
     <script>
       const introDialog = document.querySelector<HTMLDialogElement>('[data-site-intro]');
       const enterButton = document.querySelector<HTMLButtonElement>('[data-intro-enter]');
-      const introKey = 'casaluz-intro-seen-v3';
+      const introKey = 'casaluz-intro-seen-v6';
       let introSeen = false;
       try { introSeen = sessionStorage.getItem(introKey) === '1'; } catch { /* Storage may be unavailable. */ }
 
-      if (introDialog && !introSeen) introDialog.showModal();
+      if (introDialog && !introSeen) {
+        introDialog.showModal();
+        const readyDelay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 3900;
+        window.setTimeout(() => {
+          enterButton?.removeAttribute('disabled');
+          introDialog.classList.add('is-ready');
+        }, readyDelay);
+      }
 
       function enterSite() {
         if (!introDialog?.open || introDialog.classList.contains('is-leaving')) return;

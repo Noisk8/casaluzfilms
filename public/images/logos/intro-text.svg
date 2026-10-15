@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 257.33"><defs>
+    <style>
+      .st0 {
+        fill: url(#linear-gradient1);
+      }
+
+      .st0, .st1 {
+        fill-rule: evenodd;
+      }
+
+      .st2 {
+        fill: #fff;
+        stroke: #fff;
+        stroke-miterlimit: 10;
+        stroke-width: .25px;
+      }
+
+      .st1 {
+        fill: url(#linear-gradient);
+        opacity: .9;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="124.4" y1="94.61" x2="124.4" y2="174.37" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" />
+      <stop offset=".15" stop-color="#fdfdfd" stop-opacity=".99" />
+      <stop offset=".28" stop-color="#f9f9fa" stop-opacity=".95" />
+      <stop offset=".4" stop-color="#f3f3f3" stop-opacity=".88" />
+      <stop offset=".52" stop-color="#eaeaeb" stop-opacity=".78" />
+      <stop offset=".63" stop-color="#dededf" stop-opacity=".65" />
+      <stop offset=".74" stop-color="#d0cfd2" stop-opacity=".5" />
+      <stop offset=".85" stop-color="#bfbec1" stop-opacity=".31" />
+      <stop offset=".95" stop-color="#acaaaf" stop-opacity=".1" />
+      <stop offset="1" stop-color="#a3a1a6" stop-opacity="0" />
+      <stop offset="1" stop-color="#939295" stop-opacity="0" />
+      <stop offset="1" stop-color="#828282" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="linear-gradient1" x1="124.4" y1="47.54" x2="124.4" y2="161.68" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" />
+      <stop offset=".18" stop-color="#fff" stop-opacity=".99" />
+      <stop offset=".31" stop-color="#fff" stop-opacity=".95" />
+      <stop offset=".43" stop-color="#fff" stop-opacity=".89" />
+      <stop offset=".54" stop-color="#fff" stop-opacity=".8" />
+      <stop offset=".64" stop-color="#fff" stop-opacity=".68" />
+      <stop offset=".74" stop-color="#fff" stop-opacity=".54" />
+      <stop offset=".83" stop-color="#fff" stop-opacity=".37" />
+      <stop offset=".92" stop-color="#fff" stop-opacity=".19" />
+      <stop offset="1" stop-color="#fff" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  <g>
+    <path class="st2" d="M71.64,182.56c-.26,2.08-2.4,3.77-5.72,3.77-3.78,0-6.16-1.9-6.16-4.88,0-2.13,1.62-4.88,6.16-4.88,2.51,0,5.28.92,5.62,3.37h-1.2c-.34-1.77-2.33-2.48-4.42-2.48-2.87,0-4.86,1.29-4.86,3.99,0,2.07,1.36,3.99,4.86,3.99,2.75,0,4.13-1.12,4.52-2.89h1.2Z" />
+    <path class="st2" d="M81.16,183.28h-6.09l-1.55,2.82h-1.3l5.23-9.28h1.39l5.27,9.28h-1.39l-1.56-2.82ZM78.13,177.78l-2.58,4.62h5.12l-2.54-4.62Z" />
+    <path class="st2" d="M92.91,179.47c-.18-1.59-1.77-2-3.63-2s-3.27.6-3.27,1.64c0,1.21,1.43,1.5,4.23,1.87,2.11.27,4.21.69,4.21,2.46,0,2.29-2.58,2.9-4.83,2.9-2.93,0-5.07-.81-5.25-3.3h1.2c.21,1.94,1.83,2.42,4.05,2.42,1.73,0,3.53-.39,3.53-1.85s-2.11-1.59-4.21-1.86c-2.77-.35-4.23-.97-4.23-2.47,0-2.03,2.32-2.69,4.57-2.69,2.37,0,4.75.68,4.83,2.89h-1.2Z" />
+    <path class="st2" d="M103.68,183.28h-6.09l-1.56,2.82h-1.3l5.23-9.28h1.39l5.26,9.28h-1.39l-1.56-2.82ZM100.65,177.78l-2.58,4.62h5.12l-2.54-4.62Z" />
+    <path class="st2" d="M107.59,176.82h1.2v8.4h7.34l.02.88h-8.54l-.02-9.28Z" />
+    <path class="st2" d="M127.59,182.51c0,1.7-.58,3.82-5.17,3.82s-5.17-2.12-5.17-3.82v-5.69h1.2v5.69c0,2.43,1.96,2.94,3.97,2.94s3.97-.51,3.97-2.94v-5.69h1.2v5.69Z" />
+    <path class="st2" d="M128.81,185.22l8.59-7.51h-8.04v-.88h9.66v.88l-8.63,7.51h8.76l.02.88h-10.34l-.02-.88Z" />
+    <path class="st2" d="M140.29,176.82h8.67v.88h-7.47v3.15h7.1v.88h-7.1l.02,4.37h-1.2l-.02-9.28Z" />
+    <path class="st2" d="M150.32,176.82h1.2l.02,9.28h-1.2l-.02-9.28Z" />
+    <path class="st2" d="M153.79,176.82h1.2v8.4h7.34l.02.88h-8.54l-.02-9.28Z" />
+    <path class="st2" d="M175.45,176.82h1.7l.02,9.28h-1.2l-.02-8.02h-.03l-5.09,8.02h-1.1l-5.1-8.03h-.03l.02,8.03h-1.2l-.02-9.28h1.75l5.15,8.07,5.15-8.07Z" />
+    <path class="st2" d="M187.13,179.47c-.18-1.59-1.77-2-3.63-2s-3.27.6-3.27,1.64c0,1.21,1.43,1.5,4.23,1.87,2.11.27,4.21.69,4.21,2.46,0,2.29-2.58,2.9-4.83,2.9-2.93,0-5.07-.81-5.25-3.3h1.2c.21,1.94,1.83,2.42,4.05,2.42,1.73,0,3.53-.39,3.53-1.85s-2.11-1.59-4.21-1.86c-2.77-.35-4.23-.97-4.23-2.47,0-2.03,2.32-2.69,4.57-2.69,2.37,0,4.75.68,4.83,2.89h-1.2Z" />
+  </g>
+  </svg>

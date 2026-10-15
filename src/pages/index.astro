@@ -8,29 +8,28 @@ const [films, pages] = await Promise.all([
 ]);
 const home = pages.find((page) => page.id === 'home');
 const sortedFilms = [...films].sort((a, b) => (b.data.year ?? 0) - (a.data.year ?? 0));
-const featuredFilms = sortedFilms
-  .filter((film) => film.data.featured)
+const homeFilms = sortedFilms.slice(0, 8);
 ---
 
 <SiteLayout title={home?.data.title ?? 'Inicio'} description={home?.data.intro}>
-  {featuredFilms.length > 0 ? (
-    <section class="hero-carousel" aria-label="Películas destacadas">
-      {featuredFilms.map((film, index) => (
+  {sortedFilms.length > 0 ? (
+    <section class="hero-carousel" aria-label="Películas de Casa Luz Films">
+      {sortedFilms.map((film, index) => (
         <article class:list={['hero-slide', index === 0 && 'is-active']} data-slide={index}>
           {film.data.poster && <img class="hero-image" src={film.data.poster} alt="" />}
           <div class="hero-shade"></div>
           <div class="hero-copy">
             <p class="eyebrow">Una película de Casa Luz Films</p>
             <h1>{film.data.title}</h1>
-            <p class="hero-credit">Dirección: {film.data.director}</p>
+            {film.data.director && <p class="hero-credit">Dirección: {film.data.director}</p>}
             <a class="text-link light-link" href={`/films/${film.id}/`}>Descubrir película <span>↗</span></a>
           </div>
         </article>
       ))}
-      {featuredFilms.length > 1 && (
+      {sortedFilms.length > 1 && (
         <div class="carousel-controls">
           <button type="button" data-carousel="previous" aria-label="Película anterior">‹</button>
-          <span><span data-carousel-current>01</span> / {String(featuredFilms.length).padStart(2, '0')}</span>
+          <span><span data-carousel-current>01</span> / {String(sortedFilms.length).padStart(2, '0')}</span>
           <button type="button" data-carousel="next" aria-label="Película siguiente">›</button>
         </div>
       )}
@@ -56,9 +55,9 @@ const featuredFilms = sortedFilms
           <header class="home-films-heading">
             <h2 id="home-films-title">Films</h2>
           </header>
-          {sortedFilms.length > 0 ? (
+          {homeFilms.length > 0 ? (
             <div class="film-grid">
-              {sortedFilms.map((film) => (
+              {homeFilms.map((film) => (
                 <a class="film-card" href={`/films/${film.id}/`}>
                   <div class="film-image">
                     {film.data.poster ? (
@@ -66,7 +65,7 @@ const featuredFilms = sortedFilms
                     ) : <div class="image-placeholder" aria-hidden="true">CL</div>}
                   </div>
                   <h3>{film.data.title}</h3>
-                  <p>Dirección: {film.data.director}{film.data.year ? ` · ${film.data.year}` : ''}</p>
+                  <p>{[film.data.format, film.data.duration ? `${film.data.duration} min` : null, film.data.year].filter(Boolean).join(' · ')}</p>
                 </a>
               ))}
             </div>
@@ -101,10 +100,15 @@ const featuredFilms = sortedFilms
       showSlide(currentSlide + 1);
     });
 
+    if (slides.length > 1) {
+      window.setInterval(() => {
+        if (document.hidden || document.querySelector<HTMLDialogElement>('[data-site-intro]')?.open) return;
+        showSlide(currentSlide + 1);
+      }, 5000);
+    }
+
     const horizontal = document.querySelector<HTMLElement>('[data-home-horizontal]');
-    const intro = horizontal?.querySelector<HTMLElement>('.home-intro');
     const films = horizontal?.querySelector<HTMLElement>('.home-films');
-    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     let frame = 0;
 
     function updateHorizontal() {
@@ -120,11 +124,10 @@ const featuredFilms = sortedFilms
     }
 
     function configureHorizontal() {
-      if (!horizontal || !intro || !films) return;
+      if (!horizontal) return;
       horizontal.classList.remove('is-horizontal');
       horizontal.style.removeProperty('--horizontal-offset');
-      const fits = intro.scrollHeight <= window.innerHeight && films.scrollHeight <= window.innerHeight;
-      if (window.innerWidth >= 1000 && fits && !motionQuery.matches) {
+      if (window.innerWidth >= 1000) {
         horizontal.classList.add('is-horizontal');
         requestHorizontalUpdate();
       }
@@ -136,7 +139,7 @@ const featuredFilms = sortedFilms
       if (!(target instanceof Node)) return;
       const top = horizontal.getBoundingClientRect().top + window.scrollY;
       if (films?.contains(target)) window.scrollTo(0, top + window.innerHeight);
-      else if (intro?.contains(target)) window.scrollTo(0, top);
+      else window.scrollTo(0, top);
     });
 
     configureHorizontal();
@@ -145,6 +148,5 @@ const featuredFilms = sortedFilms
     }
     window.addEventListener('resize', configureHorizontal);
     window.addEventListener('scroll', requestHorizontalUpdate, { passive: true });
-    motionQuery.addEventListener('change', configureHorizontal);
   </script>
 </SiteLayout>

@@ -51,13 +51,13 @@ button {
   padding: 0;
   overflow: hidden;
   border: 0;
-  background: #17120d;
+  background: #080a0d;
   color: #fff;
   text-align: center;
 }
 
 .site-intro::backdrop {
-  background: #17120d;
+  background: #080a0d;
 }
 
 .site-intro.is-leaving {
@@ -68,7 +68,7 @@ button {
   position: absolute;
   z-index: 1;
   inset: -40%;
-  background: radial-gradient(circle at 50% 50%, #fff7d8 0, #f8e3a8 12%, rgb(215 160 77 / 35%) 35%, transparent 60%);
+  background: radial-gradient(circle at 50% 50%, rgb(255 246 211 / 35%) 0, rgb(220 181 112 / 16%) 14%, rgb(100 82 59 / 9%) 34%, transparent 60%);
   opacity: 0;
   transform: scale(.55);
   pointer-events: none;
@@ -91,14 +91,14 @@ button {
   align-items: center;
   justify-content: center;
   padding: 50px;
-  border: clamp(9px, 1.3vw, 20px) solid #30261c;
-  box-shadow: inset 0 0 0 2px #8c7150, inset 0 0 100px rgb(0 0 0 / 70%);
+  border: clamp(9px, 1.3vw, 20px) solid #11161c;
+  box-shadow: inset 0 0 0 2px #4c5761, inset 0 0 100px rgb(0 0 0 / 70%);
 }
 
 .intro-content::before {
   position: absolute;
   inset: 15px;
-  border: 1px solid rgb(255 223 165 / 28%);
+  border: 1px solid rgb(220 230 240 / 18%);
   content: '';
   pointer-events: none;
 }
@@ -115,63 +115,124 @@ button {
   animation: lightbox-vanish 900ms ease-in forwards;
 }
 
-.intro-kicker,
-.site-intro h2,
+.intro-logo,
 .intro-enter {
   position: relative;
   z-index: 3;
 }
 
-.site-intro.is-leaving .intro-kicker,
-.site-intro.is-leaving h2,
+.site-intro.is-leaving .intro-logo,
 .site-intro.is-leaving .intro-enter {
   opacity: 0;
   transition: opacity 180ms ease;
 }
 
-.intro-kicker {
-  margin: 0 0 13px;
-  font-size: 12px;
-  letter-spacing: .24em;
-  text-transform: uppercase;
+.intro-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
-.site-intro h2 {
-  margin: 0 0 38px;
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(38px, 7vw, 70px);
-  font-weight: 400;
-  letter-spacing: .04em;
+.intro-logo {
+  width: min(70vw, 360px);
+  aspect-ratio: 240 / 257.33;
+}
+
+.intro-logo img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.site-intro[open] .intro-logo-triangle {
+  animation: intro-triangle-in 1800ms cubic-bezier(.2,.8,.2,1) 250ms both;
+}
+
+.site-intro[open] .intro-logo-circle {
+  animation: intro-circle-in 1900ms cubic-bezier(.2,.8,.2,1) 900ms both;
+}
+
+.site-intro[open] .intro-logo-text {
+  animation: intro-text-in 1600ms cubic-bezier(.2,.8,.2,1) 1700ms both;
+}
+
+.intro-logo-flare {
+  position: absolute;
+  z-index: 1;
+  top: 36%;
+  left: 50%;
+  width: 9%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 22px 9px #fff, 0 0 75px 40px rgb(255 224 157 / 75%);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.1);
+  pointer-events: none;
+}
+
+.site-intro[open] .intro-logo-flare {
+  animation: intro-logo-flash 1100ms ease-out 2800ms both;
 }
 
 .intro-enter {
-  min-width: 156px;
-  padding: 14px 22px;
-  border: 1px solid #f5e1b9;
-  background: rgb(20 15 10 / 55%);
-  color: #fff7df;
+  margin-top: calc(min(70vw, 360px) * -0.2);
+  padding: 8px 12px;
+  border: 0;
+  background: none;
+  color: #fff;
   cursor: pointer;
-  font-size: 15px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  transition: background 220ms ease, color 220ms ease;
+  font-size: 17px;
+  letter-spacing: .2em;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 650ms ease, transform 650ms ease, color 220ms ease;
+}
+
+.site-intro.is-ready:not(.is-leaving) .intro-enter {
+  opacity: 1;
+  transform: none;
 }
 
 .intro-enter:hover,
 .intro-enter:focus-visible {
-  background: #fff7df;
-  color: #241b11;
-}
-
-.intro-enter span {
-  margin-left: 12px;
+  color: #f5dca6;
+  text-decoration: underline;
+  text-underline-offset: 5px;
 }
 
 @keyframes intro-glow {
-  0%, 17%, 29% { opacity: .06; transform: scale(.55); }
-  10%, 23% { opacity: .5; }
-  60% { opacity: .3; }
-  100% { opacity: .55; transform: scale(1); }
+  0%, 17%, 29% { opacity: .03; transform: scale(.55); }
+  10%, 23% { opacity: .22; }
+  60% { opacity: .12; }
+  100% { opacity: .18; transform: scale(1); }
+}
+
+@keyframes intro-triangle-in {
+  from { opacity: 0; transform: translate(-85%, 75%) rotate(-18deg) scale(.7); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes intro-circle-in {
+  from { opacity: 0; transform: translate(85%, -65%) scale(.6); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes intro-text-in {
+  from { opacity: 0; transform: translateY(90%) scale(.92); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes intro-logo-flash {
+  0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(.1); }
+  35% { opacity: .95; transform: translate(-50%, -50%) scale(1.5); }
 }
 
 @keyframes intro-flash {
@@ -225,6 +286,16 @@ button {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 24px;
   letter-spacing: 0.07em;
+}
+
+.wordmark img {
+  display: block;
+  width: 240px;
+  height: auto;
+}
+
+body:not(.landing-page) .wordmark img {
+  filter: brightness(0);
 }
 
 .menu-toggle {
@@ -511,10 +582,15 @@ button {
 
 .home-horizontal.is-horizontal .home-films {
   padding: 40px max(7vw, calc((100vw - 1110px) / 2));
+  overflow-y: auto;
 }
 
 .home-horizontal.is-horizontal .home-films-heading {
-  margin-bottom: 48px;
+  margin-bottom: 24px;
+}
+
+.home-horizontal.is-horizontal .home-films .film-grid {
+  width: min(100%, 920px, calc((100vh - 220px) * 2));
 }
 
 .home-intro > p:not(.eyebrow) {
@@ -527,11 +603,11 @@ button {
 .home-films {
   width: min(1110px, 86%);
   margin: 0 auto;
-  padding: 12px 0 110px;
+  padding: 12px 0 60px;
 }
 
 .home-films-heading {
-  margin-bottom: 78px;
+  margin-bottom: 38px;
   text-align: center;
 }
 
@@ -544,7 +620,8 @@ button {
 }
 
 .home-films .film-grid {
-  margin-bottom: 40px;
+  width: min(100%, 920px);
+  margin: 0 auto 24px;
 }
 
 .home-films .film-card h3 {
@@ -564,7 +641,7 @@ button {
 .home-films-link {
   display: flex;
   width: fit-content;
-  margin: 45px auto 0;
+  margin: 24px auto 0;
 }
 
 .page-heading {
@@ -1002,6 +1079,10 @@ button {
     font-size: 21px;
   }
 
+  .wordmark img {
+    width: 190px;
+  }
+
   .menu-panel {
     width: 100%;
     min-width: 0;
@@ -1128,6 +1209,16 @@ button {
   .site-intro.is-leaving,
   .site-intro.is-leaving .intro-content {
     animation: none;
+  }
+
+  .site-intro[open] .intro-logo img,
+  .site-intro[open] .intro-logo-flare {
+    animation: none;
+  }
+
+  .site-intro[open] .intro-logo img {
+    opacity: 1;
+    transform: none;
   }
 
   .menu-panel.is-open .menu-links a {

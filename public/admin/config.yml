@@ -19,7 +19,7 @@ collections:
     slug: "{{slug}}"
     extension: md
     format: frontmatter
-    summary: "{{title}} · {{director}}"
+    summary: "{{title}} · {{year}}"
     fields:
       - label: Título
         name: title
@@ -27,8 +27,18 @@ collections:
       - label: Dirección
         name: director
         widget: string
+        required: false
       - label: Año
         name: year
+        widget: number
+        required: false
+        value_type: int
+      - label: Formato
+        name: format
+        widget: string
+        required: false
+      - label: Duración en minutos
+        name: duration
         widget: number
         required: false
         value_type: int

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 240 257.33">
+  <!-- Generator: Adobe Illustrator 30.8.2, SVG Export Plug-In . SVG Version: 2.1.4 Build 7)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: url(#linear-gradient1);
+      }
+
+      .st0, .st1 {
+        fill-rule: evenodd;
+      }
+
+      .st1 {
+        fill: url(#linear-gradient);
+        opacity: .9;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="117.07" y1="114.61" x2="117.07" y2="194.37" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".15" stop-color="#fdfdfd" stop-opacity=".99"/>
+      <stop offset=".28" stop-color="#f9f9fa" stop-opacity=".95"/>
+      <stop offset=".4" stop-color="#f3f3f3" stop-opacity=".88"/>
+      <stop offset=".52" stop-color="#eaeaeb" stop-opacity=".78"/>
+      <stop offset=".63" stop-color="#dededf" stop-opacity=".65"/>
+      <stop offset=".74" stop-color="#d0cfd2" stop-opacity=".5"/>
+      <stop offset=".85" stop-color="#bfbec1" stop-opacity=".31"/>
+      <stop offset=".95" stop-color="#acaaaf" stop-opacity=".1"/>
+      <stop offset="1" stop-color="#a3a1a6" stop-opacity="0"/>
+      <stop offset="1" stop-color="#939295" stop-opacity="0"/>
+      <stop offset="1" stop-color="#828282" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient1" x1="117.07" y1="67.54" x2="117.07" y2="181.68" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".18" stop-color="#fff" stop-opacity=".99"/>
+      <stop offset=".31" stop-color="#fff" stop-opacity=".95"/>
+      <stop offset=".43" stop-color="#fff" stop-opacity=".89"/>
+      <stop offset=".54" stop-color="#fff" stop-opacity=".8"/>
+      <stop offset=".64" stop-color="#fff" stop-opacity=".68"/>
+      <stop offset=".74" stop-color="#fff" stop-opacity=".54"/>
+      <stop offset=".83" stop-color="#fff" stop-opacity=".37"/>
+      <stop offset=".92" stop-color="#fff" stop-opacity=".19"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <polyline class="st1" points="52.44 194.37 181.7 194.37 117.07 114.61"/>
+  <path class="st0" d="M174.14,124.61c0,31.52-25.55,57.07-57.07,57.07s-57.07-25.55-57.07-57.07,25.55-57.07,57.07-57.07,57.07,25.55,57.07,57.07Z"/>
+</svg>

@@ -5,8 +5,10 @@ const films = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/films' }),
   schema: z.object({
     title: z.string(),
-    director: z.string(),
+    director: z.string().optional(),
     year: z.number().optional(),
+    format: z.string().optional(),
+    duration: z.number().optional(),
     poster: z.string().optional(),
     synopsis: z.string().optional(),
     featured: z.boolean().default(false),

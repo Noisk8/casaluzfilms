@@ -21,7 +21,7 @@ const sortedFilms = films.sort((a, b) => (b.data.year ?? 0) - (a.data.year ?? 0)
               ) : <div class="image-placeholder" aria-hidden="true">CL</div>}
             </div>
             <h2>{film.data.title}</h2>
-            <p>Dirección: {film.data.director}{film.data.year ? ` · ${film.data.year}` : ''}</p>
+            <p>{[film.data.format, film.data.duration ? `${film.data.duration} min` : null, film.data.year].filter(Boolean).join(' · ')}</p>
           </a>
         ))}
       </div>
