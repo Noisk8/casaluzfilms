@@ -16,6 +16,14 @@ const { title, description = 'Casa Luz Films: historias para la pantalla.' } = A
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#ffffff" />
+    <script is:inline>
+      document.documentElement.classList.add('intro-gate');
+      try {
+        if (sessionStorage.getItem('casaluz-intro-seen-v6') === '1') {
+          document.documentElement.classList.add('intro-seen');
+        }
+      } catch { /* Storage may be unavailable. */ }
+    </script>
     <title>{title} · Casa Luz Films</title>
   </head>
   <body class={Astro.url.pathname === '/' ? 'landing-page' : undefined}>
@@ -74,6 +82,8 @@ const { title, description = 'Casa Luz Films: historias para la pantalla.' } = A
       let introSeen = false;
       try { introSeen = sessionStorage.getItem(introKey) === '1'; } catch { /* Storage may be unavailable. */ }
 
+      if (introSeen) document.documentElement.classList.add('intro-seen');
+
       if (introDialog && !introSeen) {
         introDialog.showModal();
         const readyDelay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 3900;
@@ -90,6 +100,7 @@ const { title, description = 'Casa Luz Films: historias para la pantalla.' } = A
         const duration = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 900;
         window.setTimeout(() => {
           introDialog.close();
+          document.documentElement.classList.add('intro-seen');
           introDialog.classList.remove('is-leaving');
           document.querySelector<HTMLElement>('.wordmark')?.focus();
           startReveals();

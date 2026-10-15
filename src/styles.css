@@ -29,6 +29,14 @@ body.menu-open {
   overflow: hidden;
 }
 
+html.intro-gate:not(.intro-seen) {
+  background: #080a0d;
+}
+
+html.intro-gate:not(.intro-seen) body > :not(.site-intro) {
+  visibility: hidden;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -546,12 +554,14 @@ body:not(.landing-page) .wordmark img {
 
 .home-horizontal.is-horizontal {
   height: 200vh;
+  height: 200dvh;
 }
 
 .home-horizontal.is-horizontal .home-horizontal-viewport {
   position: sticky;
   top: 0;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
 }
 
@@ -1050,6 +1060,20 @@ body:not(.landing-page) .wordmark img {
 }
 
 @media (max-width: 800px) {
+  .home-horizontal.is-horizontal .home-films {
+    justify-content: flex-start;
+    padding: 76px 6vw 28px;
+    overflow-y: hidden;
+  }
+
+  .home-horizontal.is-horizontal.is-at-films .home-films {
+    overflow-y: auto;
+  }
+
+  .home-horizontal.is-horizontal .home-films-heading {
+    margin-bottom: 24px;
+  }
+
   .film-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
