@@ -1,9 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500&family=DM+Sans:wght@400;500&family=Playfair+Display:wght@400;500&display=swap');
-
 :root {
   color: #222;
   background: #fff;
-  font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -47,6 +45,16 @@ button {
   font: inherit;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+}
+
 .site-intro {
   position: fixed;
   z-index: 20;
@@ -66,6 +74,17 @@ button {
 
 .site-intro::backdrop {
   background: #080a0d;
+}
+
+.intro-background-video {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(.52) saturate(.8);
 }
 
 .site-intro.is-leaving {
@@ -99,16 +118,6 @@ button {
   align-items: center;
   justify-content: center;
   padding: 50px;
-  border: clamp(9px, 1.3vw, 20px) solid #11161c;
-  box-shadow: inset 0 0 0 2px #4c5761, inset 0 0 100px rgb(0 0 0 / 70%);
-}
-
-.intro-content::before {
-  position: absolute;
-  inset: 15px;
-  border: 1px solid rgb(220 230 240 / 18%);
-  content: '';
-  pointer-events: none;
 }
 
 .intro-content::after {
@@ -197,16 +206,20 @@ button {
 
 .intro-enter {
   margin-top: calc(min(70vw, 360px) * -0.2);
-  padding: 8px 12px;
-  border: 0;
-  background: none;
+  min-width: 112px;
+  padding: 12px 25px;
+  border: 1px solid currentColor;
+  border-radius: 0;
+  background: transparent;
   color: #fff;
   cursor: pointer;
-  font-size: 17px;
-  letter-spacing: .2em;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
   opacity: 0;
   transform: translateY(12px);
-  transition: opacity 650ms ease, transform 650ms ease, color 220ms ease;
+  transition: opacity 650ms ease, transform 650ms ease, color 220ms ease, background-color 220ms ease;
 }
 
 .site-intro.is-ready:not(.is-leaving) .intro-enter {
@@ -216,9 +229,8 @@ button {
 
 .intro-enter:hover,
 .intro-enter:focus-visible {
-  color: #f5dca6;
-  text-decoration: underline;
-  text-underline-offset: 5px;
+  background: #fff;
+  color: #080a0d;
 }
 
 @keyframes intro-glow {
@@ -267,13 +279,13 @@ button {
   position: absolute;
   z-index: 5;
   top: 0;
-  left: 50%;
+  left: 0;
+  width: 100%;
+  height: 72px;
+  padding: 0 max(6vw, calc((100% - 1140px) / 2));
   display: flex;
-  width: min(1140px, 88%);
-  height: 92px;
   align-items: center;
   justify-content: space-between;
-  transform: translateX(-50%);
 }
 
 .landing-page .site-header {
@@ -281,14 +293,15 @@ button {
 }
 
 .wordmark {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 24px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 22px;
   letter-spacing: 0.07em;
+  margin-right: auto;
 }
 
 .wordmark img {
   display: block;
-  width: 240px;
+  width: 200px;
   height: auto;
 }
 
@@ -324,7 +337,7 @@ body:not(.landing-page) .wordmark img {
   min-width: 380px;
   align-content: center;
   justify-items: center;
-  background: rgb(29 30 31 / 96%);
+  background: #000;
   color: white;
   opacity: 0;
   pointer-events: none;
@@ -346,9 +359,10 @@ body:not(.landing-page) .wordmark img {
   background: transparent;
   color: inherit;
   cursor: pointer;
-  font-family: Arial, sans-serif;
-  font-size: 36px;
-  font-weight: 200;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1;
 }
 
 .menu-links {
@@ -359,8 +373,10 @@ body:not(.landing-page) .wordmark img {
 
 .menu-links a {
   padding: 3px 10px;
-  font-size: 20px;
-  letter-spacing: var(--tracking);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: .08em;
   text-transform: uppercase;
   transition: opacity 180ms ease;
 }
@@ -386,7 +402,8 @@ body:not(.landing-page) .wordmark img {
 .hero-carousel,
 .hero-empty {
   position: relative;
-  min-height: min(680px, 82vh);
+  height: 100dvh;
+  min-height: 100vh;
   overflow: hidden;
   background: #726d5b;
   color: white;
@@ -396,8 +413,8 @@ body:not(.landing-page) .wordmark img {
   position: absolute;
   inset: 0;
   display: flex;
-  align-items: end;
-  padding: 150px max(8%, calc((100% - 1140px) / 2)) 110px;
+  align-items: flex-end;
+  padding: 60px max(6vw, calc((100% - 1140px) / 2)) 40px max(6vw, calc((100% - 1140px) / 2));
   opacity: 0;
   pointer-events: none;
   transition: opacity 500ms ease;
@@ -441,9 +458,9 @@ body:not(.landing-page) .wordmark img {
 .hero-copy h1,
 .hero-empty h1 {
   margin: 0 0 16px;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: clamp(46px, 8vw, 94px);
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1.04;
 }
 
@@ -512,11 +529,14 @@ body:not(.landing-page) .wordmark img {
 .carousel-controls {
   position: absolute;
   z-index: 2;
-  right: max(8%, calc((100% - 1140px) / 2));
-  bottom: 32px;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
-  gap: 16px;
+  justify-content: space-between;
+  padding: 0 max(6vw, calc((100% - 1140px) / 2));
   color: white;
   font-size: 12px;
   letter-spacing: 0.15em;
@@ -525,14 +545,16 @@ body:not(.landing-page) .wordmark img {
 .carousel-controls button {
   width: 38px;
   height: 38px;
-  border: 1px solid rgb(255 255 255 / 60%);
-  border-radius: 50%;
+  border: 0;
+  border-radius: 0;
   background: transparent;
   color: white;
   cursor: pointer;
   font-family: Arial, sans-serif;
   font-size: 26px;
   line-height: 1;
+  display: grid;
+  place-items: center;
 }
 
 .home-intro {
@@ -595,7 +617,7 @@ body:not(.landing-page) .wordmark img {
 
 .home-intro > p:not(.eyebrow) {
   margin: 0 auto 29px;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: clamp(23px, 3vw, 34px);
   line-height: 1.55;
 }
@@ -614,7 +636,7 @@ body:not(.landing-page) .wordmark img {
 .home-films-heading h2 {
   margin: 0;
   font-size: 29px;
-  font-weight: 400;
+  font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
 }
@@ -632,7 +654,7 @@ body:not(.landing-page) .wordmark img {
   left: 18px;
   margin: 0;
   font-size: clamp(17px, 2vw, 23px);
-  font-weight: 400;
+  font-weight: 700;
   letter-spacing: 0.19em;
   line-height: 1.35;
   text-transform: uppercase;
@@ -656,7 +678,7 @@ body:not(.landing-page) .wordmark img {
 .page-heading h1 {
   margin: 0;
   font-size: 30px;
-  font-weight: 400;
+  font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
 }
@@ -717,7 +739,7 @@ body:not(.landing-page) .wordmark img {
   left: 18px;
   margin: 0;
   font-size: clamp(17px, 2vw, 23px);
-  font-weight: 400;
+  font-weight: 700;
   letter-spacing: 0.19em;
   line-height: 1.35;
   text-transform: uppercase;
@@ -741,7 +763,7 @@ body:not(.landing-page) .wordmark img {
   height: 100%;
   place-items: center;
   color: rgb(255 255 255 / 70%);
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 48px;
 }
 
@@ -749,7 +771,7 @@ body:not(.landing-page) .wordmark img {
   max-width: 590px;
   margin: 50px auto;
   color: var(--quiet);
-  font-family: 'DM Sans', sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 15px;
   line-height: 1.8;
   text-align: center;
@@ -844,6 +866,50 @@ body:not(.landing-page) .wordmark img {
 
 .film-credits dt {
   flex: 0 0 auto;
+  font-weight: 700;
+}
+
+.film-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+}
+
+.film-festivals {
+  width: min(900px, 72%);
+  margin: -20px auto 82px;
+}
+
+.film-festivals h2 {
+  margin: 0 0 28px;
+  font-size: 22px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.film-festivals ul {
+  display: grid;
+  gap: 13px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.film-festivals li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.film-festivals li::before {
+  position: absolute;
+  top: .68em;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  background: currentColor;
+  content: '';
 }
 
 .film-gallery {
@@ -853,9 +919,9 @@ body:not(.landing-page) .wordmark img {
 
 .film-gallery > h2 {
   margin: 0 0 24px;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 25px;
-  font-weight: 400;
+  font-weight: 700;
   text-align: center;
 }
 
@@ -886,7 +952,7 @@ body:not(.landing-page) .wordmark img {
 .concept-note {
   margin: 24px 0 0;
   color: var(--quiet);
-  font-family: 'DM Sans', sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
   text-align: center;
 }
@@ -960,7 +1026,7 @@ body:not(.landing-page) .wordmark img {
 .person-card h2 {
   margin: 25px 0 5px;
   font-size: 17px;
-  font-weight: 400;
+  font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
@@ -1030,7 +1096,7 @@ body:not(.landing-page) .wordmark img {
   padding: 30px 7%;
   background: #111;
   color: white;
-  font-family: 'DM Sans', sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 13px;
 }
 
@@ -1085,8 +1151,8 @@ body:not(.landing-page) .wordmark img {
 
 @media (max-width: 520px) {
   .site-header {
-    width: 88%;
-    height: 76px;
+    height: 70px;
+    padding: 0 6vw;
   }
 
   .wordmark {
@@ -1094,7 +1160,7 @@ body:not(.landing-page) .wordmark img {
   }
 
   .wordmark img {
-    width: 190px;
+    width: 170px;
   }
 
   .menu-panel {
@@ -1177,6 +1243,7 @@ body:not(.landing-page) .wordmark img {
   }
 
   .film-copy,
+  .film-festivals,
   .about-content,
   .contact-content,
   .person-bio {

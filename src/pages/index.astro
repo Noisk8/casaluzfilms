@@ -18,18 +18,11 @@ const homeFilms = sortedFilms.slice(0, 8);
         <article class:list={['hero-slide', index === 0 && 'is-active']} data-slide={index}>
           {film.data.poster && <img class="hero-image" src={film.data.poster} alt="" />}
           <div class="hero-shade"></div>
-          <div class="hero-copy">
-            <p class="eyebrow">Una película de Casa Luz Films</p>
-            <h1>{film.data.title}</h1>
-            {film.data.director && <p class="hero-credit">Dirección: {film.data.director}</p>}
-            <a class="text-link light-link" href={`/films/${film.id}/`}>Descubrir película <span>↗</span></a>
-          </div>
         </article>
       ))}
       {sortedFilms.length > 1 && (
         <div class="carousel-controls">
           <button type="button" data-carousel="previous" aria-label="Película anterior">‹</button>
-          <span><span data-carousel-current>01</span> / {String(sortedFilms.length).padStart(2, '0')}</span>
           <button type="button" data-carousel="next" aria-label="Película siguiente">›</button>
         </div>
       )}
@@ -89,8 +82,6 @@ const homeFilms = sortedFilms.slice(0, 8);
         slide.classList.toggle('is-active', slideIndex === currentSlide);
         slide.setAttribute('aria-hidden', String(slideIndex !== currentSlide));
       });
-      const counter = document.querySelector('[data-carousel-current]');
-      if (counter) counter.textContent = String(currentSlide + 1).padStart(2, '0');
     }
 
     document.querySelector('[data-carousel="previous"]')?.addEventListener('click', () => {

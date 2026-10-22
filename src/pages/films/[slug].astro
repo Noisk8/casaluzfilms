@@ -9,7 +9,8 @@ export async function getStaticPaths() {
 
 const { film } = Astro.props;
 const { data } = film;
-const galleryImages = data.stills;
+const { producers = [], coProducers = [], festivals = [], stills = [] } = data;
+const galleryImages = stills;
 const trailerUrl = data.trailerUrl?.match(/^https:\/\/(www\.)?(youtube\.com\/embed\/|player\.vimeo\.com\/video\/)/)
   ? data.trailerUrl
   : undefined;
@@ -39,17 +40,32 @@ const trailerUrl = data.trailerUrl?.match(/^https:\/\/(www\.)?(youtube\.com\/emb
     <section class="film-copy">
       {data.synopsis && <p class="film-synopsis">{data.synopsis}</p>}
       <dl class="film-credits">
+        {data.status && <div><dt>Estado</dt><dd>{data.status}</dd></div>}
         {data.originalTitle && <div><dt>Título original</dt><dd>{data.originalTitle}</dd></div>}
         {data.format && <div><dt>Formato</dt><dd>{data.format}</dd></div>}
         {data.duration && <div><dt>Duración</dt><dd>{data.duration} min</dd></div>}
         {data.director && <div><dt>Dirección</dt><dd>{data.director}</dd></div>}
         {data.screenwriter && <div><dt>Guion</dt><dd>{data.screenwriter}</dd></div>}
-        {data.producers.length > 0 && <div><dt>Producción</dt><dd>{data.producers.join(', ')}</dd></div>}
-        {data.coProducers.length > 0 && <div><dt>Coproducción</dt><dd>{data.coProducers.join(', ')}</dd></div>}
+        {producers.length > 0 && <div><dt>Producción</dt><dd>{producers.join(', ')}</dd></div>}
+        {coProducers.length > 0 && <div><dt>Coproducción</dt><dd>{coProducers.join(', ')}</dd></div>}
         {data.sales && <div><dt>Ventas</dt><dd>{data.sales}</dd></div>}
       </dl>
-      {data.imdbUrl && <a class="text-link" href={data.imdbUrl} target="_blank" rel="noreferrer">Más información en IMDb <span>↗</span></a>}
+      {(data.imdbUrl || data.instagramUrl || data.websiteUrl) && (
+        <div class="film-links" aria-label="Enlaces de la película">
+          {data.imdbUrl && <a class="text-link" href={data.imdbUrl} target="_blank" rel="noreferrer">IMDb <span>↗</span></a>}
+          {data.instagramUrl && <a class="text-link" href={data.instagramUrl} target="_blank" rel="noreferrer">Instagram <span>↗</span></a>}
+          {data.websiteUrl && <a class="text-link" href={data.websiteUrl} target="_blank" rel="noreferrer">Sitio oficial <span>↗</span></a>}
+        </div>
+      )}
     </section>
+    {festivals.length > 0 && (
+      <section class="film-festivals" aria-labelledby="film-festivals-title">
+        <h2 id="film-festivals-title">Festivales y reconocimientos</h2>
+        <ul>
+          {festivals.map((festival) => <li>{festival}</li>)}
+        </ul>
+      </section>
+    )}
     {galleryImages.length > 0 && (
       <section class="film-gallery" aria-label="Bocetos visuales de la película">
         <div class="film-stills">

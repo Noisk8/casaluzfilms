@@ -19,6 +19,10 @@ const films = defineCollection({
     sales: z.string().optional(),
     trailerUrl: z.string().optional(),
     imdbUrl: z.string().optional(),
+    instagramUrl: z.string().optional(),
+    websiteUrl: z.string().optional(),
+    status: z.string().optional(),
+    festivals: z.array(z.string()).default([]),
     stills: z.array(z.string()).default([]),
   }),
 });

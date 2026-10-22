@@ -28,6 +28,17 @@ const { title, description = 'Casa Luz Films: historias para la pantalla.' } = A
   </head>
   <body class={Astro.url.pathname === '/' ? 'landing-page' : undefined}>
     <dialog class="site-intro" aria-labelledby="site-intro-title" data-site-intro>
+      <video
+        class="intro-background-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        aria-hidden="true"
+      >
+        <source src="/video/video_de_fondo%20intro.mp4" type="video/mp4" />
+      </video>
       <div class="intro-light" aria-hidden="true"></div>
       <div class="intro-content">
         <h2 id="site-intro-title" class="intro-title">Casa Luz Films</h2>
