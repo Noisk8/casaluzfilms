@@ -2,6 +2,6 @@
 title: Contact
 intro: ''
 address: ''
-email: ''
+email: casaluzfilms@gmail.com
 phone: ''
 ---

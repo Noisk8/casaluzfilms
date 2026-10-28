@@ -6,10 +6,21 @@ const pages = await getCollection('pages');
 const foundation = pages.find((page) => page.id === 'fundacion');
 ---
 
-<SiteLayout title={foundation?.data.title ?? 'Fundación'}>
-  <section class="page-heading"><h1>{foundation?.data.title ?? 'Fundación'}</h1></section>
-  <article class="about-content">
-    {foundation?.data.intro && <p class="about-lead">{foundation.data.intro}</p>}
-    {foundation?.data.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+<SiteLayout title={foundation?.data.title ?? 'Fundación SerPUENTE'}>
+  <article class="foundation-page">
+    <figure class="foundation-logo">
+      <img src="/images/logos/logo_fundacion.png" alt="Fundación SerPUENTE: Patrimonio, Cultura y Memoria Digital de la Amazonía" />
+    </figure>
+    <div class="foundation-copy">
+      <h1>Fundación <span>SerPUENTE</span></h1>
+      {foundation?.data.intro && <p>{foundation.data.intro}</p>}
+      {foundation?.data.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+      {foundation?.data.mission && (
+        <section class="foundation-mission" aria-labelledby="mission-title">
+          <h2 id="mission-title">Misión</h2>
+          <p>{foundation.data.mission}</p>
+        </section>
+      )}
+    </div>
   </article>
 </SiteLayout>

@@ -163,6 +163,10 @@ collections:
               label: Párrafo
               name: paragraph
               widget: text
+          - label: Misión
+            name: mission
+            widget: text
+            required: false
   - name: people
     label: Team
     label_singular: Integrante
