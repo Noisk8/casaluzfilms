@@ -208,22 +208,22 @@ h6 {
   z-index: 1;
   top: 36%;
   left: 50%;
-  width: 9%;
+  width: 12%;
   aspect-ratio: 1;
   border-radius: 50%;
   background: #fff;
-  box-shadow: 0 0 22px 9px #fff, 0 0 75px 40px rgb(255 224 157 / 75%);
+  box-shadow: 0 0 28px 12px #fff, 0 0 96px 52px rgb(255 224 157 / 88%);
   opacity: 0;
   transform: translate(-50%, -50%) scale(.1);
   pointer-events: none;
 }
 
 .site-intro[open] .intro-logo:is(.is-formed, .is-assembled) .intro-logo-flare {
-  animation: intro-logo-flash 1100ms ease-out both;
+  animation: intro-logo-flash 1700ms ease-out both;
 }
 
 .site-intro[open] .intro-logo.is-assembling .intro-logo-flare {
-  animation: intro-logo-flash 1350ms 2350ms ease-out both;
+  animation: intro-logo-flash 2100ms 2350ms ease-out both;
 }
 
 .intro-enter {
@@ -264,7 +264,8 @@ h6 {
 
 @keyframes intro-logo-flash {
   0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(.1); }
-  35% { opacity: .95; transform: translate(-50%, -50%) scale(1.5); }
+  28% { opacity: 1; transform: translate(-50%, -50%) scale(1.65); }
+  58% { opacity: .9; transform: translate(-50%, -50%) scale(1.42); }
 }
 
 @keyframes intro-circle-form {
@@ -598,16 +599,9 @@ body:not(.landing-page) .wordmark img {
   place-items: center;
 }
 
-.home-intro {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 105px 32px 112px;
-  text-align: center;
-}
-
 .home-horizontal.is-horizontal {
-  height: 200vh;
-  height: 200dvh;
+  height: 240vh;
+  height: 240dvh;
 }
 
 .home-horizontal.is-horizontal .home-horizontal-viewport {
@@ -626,51 +620,25 @@ body:not(.landing-page) .wordmark img {
   will-change: transform;
 }
 
-.home-horizontal.is-horizontal .home-intro,
-.home-horizontal.is-horizontal .home-films {
-  display: flex;
+.home-hero-panel,
+.home-films {
   width: 100vw;
   max-width: none;
   height: 100%;
   flex: 0 0 100vw;
-  flex-direction: column;
-  justify-content: center;
   margin: 0;
 }
 
-.home-horizontal.is-horizontal .home-intro {
-  align-items: center;
-  padding: 40px max(32px, calc((100vw - 900px) / 2));
-}
-
-.home-horizontal.is-horizontal .home-films {
+.home-films {
+  display: flex;
+  flex-direction: column;
   padding: 40px max(7vw, calc((100vw - 1110px) / 2));
+  padding-bottom: 104px;
   overflow-y: auto;
 }
 
-.home-horizontal.is-horizontal .home-films-heading {
-  margin-bottom: 24px;
-}
-
-.home-horizontal.is-horizontal .home-films .film-grid {
-  width: min(100%, 920px, calc((100vh - 220px) * 2));
-}
-
-.home-intro > p:not(.eyebrow) {
-  margin: 0 auto 29px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: clamp(23px, 3vw, 34px);
-  line-height: 1.55;
-}
-
-.home-films {
-  width: min(1110px, 86%);
-  margin: 0 auto;
-  padding: 12px 0 60px;
-}
-
 .home-films-heading {
-  margin-bottom: 38px;
+  margin-bottom: 24px;
   text-align: center;
 }
 
@@ -678,34 +646,15 @@ body:not(.landing-page) .wordmark img {
   margin: 0;
   font-size: 29px;
   font-weight: 700;
-  letter-spacing: 0.28em;
+  letter-spacing: .28em;
   text-transform: uppercase;
 }
 
 .home-films .film-grid {
-  width: min(100%, 920px);
-  margin: 0 auto 24px;
+  width: min(100%, 760px);
+  margin: 0 auto;
 }
 
-.home-films .film-card h3 {
-  position: absolute;
-  z-index: 1;
-  right: 18px;
-  bottom: 37px;
-  left: 18px;
-  margin: 0;
-  font-size: clamp(17px, 2vw, 23px);
-  font-weight: 700;
-  letter-spacing: 0.19em;
-  line-height: 1.35;
-  text-transform: uppercase;
-}
-
-.home-films-link {
-  display: flex;
-  width: fit-content;
-  margin: 24px auto 0;
-}
 
 .page-heading {
   display: grid;
@@ -778,7 +727,7 @@ body:not(.landing-page) .wordmark img {
 }
 
 .catalogue .film-image img {
-  filter: grayscale(1);
+  filter: grayscale(.2) brightness(.78);
   transition: filter 400ms ease, transform 500ms ease;
 }
 
@@ -789,7 +738,37 @@ body:not(.landing-page) .wordmark img {
 
 .catalogue .film-card:hover .film-image img,
 .catalogue .film-card:focus-visible .film-image img {
-  filter: grayscale(0);
+  filter: grayscale(0) brightness(1);
+  transform: scale(1.025);
+}
+
+/* Catalogue banners start as quiet image-only stills; their information is
+   revealed when the card is intentionally explored. */
+.catalogue .film-image::after {
+  inset: 0;
+  background: rgb(0 0 0 / 30%);
+  opacity: 1;
+  transition: opacity 400ms ease;
+}
+
+.catalogue .film-card h2,
+.catalogue .film-card > p {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+.catalogue .film-card:hover .film-image::after,
+.catalogue .film-card:focus-visible .film-image::after {
+  opacity: .16;
+}
+
+.catalogue .film-card:hover h2,
+.catalogue .film-card:hover > p,
+.catalogue .film-card:focus-visible h2,
+.catalogue .film-card:focus-visible > p {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .film-card h2 {
@@ -1331,18 +1310,9 @@ body:not(.landing-page) .wordmark img {
 }
 
 @media (max-width: 800px) {
-  .home-horizontal.is-horizontal .home-films {
-    justify-content: flex-start;
+  .home-films {
     padding: 76px 6vw 28px;
-    overflow-y: hidden;
-  }
-
-  .home-horizontal.is-horizontal.is-at-films .home-films {
-    overflow-y: auto;
-  }
-
-  .home-horizontal.is-horizontal .home-films-heading {
-    margin-bottom: 24px;
+    padding-bottom: 76px;
   }
 
   .film-grid {
@@ -1429,27 +1399,6 @@ body:not(.landing-page) .wordmark img {
   .carousel-controls {
     right: 6%;
     bottom: 22px;
-  }
-
-  .home-intro {
-    padding: 78px 26px 82px;
-  }
-
-  .home-films {
-    width: 90%;
-    padding-bottom: 76px;
-  }
-
-  .home-films-heading {
-    margin-bottom: 38px;
-  }
-
-  .home-films .film-card h3 {
-    right: 11px;
-    bottom: 33px;
-    left: 11px;
-    font-size: 16px;
-    letter-spacing: 0.12em;
   }
 
   .page-heading {

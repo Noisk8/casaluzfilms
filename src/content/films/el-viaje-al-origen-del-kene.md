@@ -5,6 +5,7 @@ format: Largometraje documental
 duration: 92
 year: 2024
 poster: /images/films/elviajealorigen.png
+banner: /images/banners/2%20viaje%20kene%20sin%20titulos.jpg
 featured: true
 synopsis: Un camino de lucha y perseverancia. Olinda Silvano y Olga Mori, dos grandes mujeres y líderes indígenas que migraron a la ciudad, adaptan su arte ancestral amazónico del Kené en vibrantes murales que llenan el paisaje urbano de energía y espiritualidad.
 screenwriter: Rodolfo Arrascue, Fabiola Sialer Cuevas

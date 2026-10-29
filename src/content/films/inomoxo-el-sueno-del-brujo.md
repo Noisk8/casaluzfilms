@@ -5,6 +5,7 @@ format: Largometraje
 duration: 81
 year: 2024
 poster: /images/films/INOMOXO ESP.00_37_27_16.Imagen fija025.png
+banner: /images/banners/1%20inomoxo%20%20sin%20titulos.jpg
 featured: true
 synopsis: Un viaje inmersivo y de misterios a las profundidades del bosque Amazónico en busca del gran brujo Ino Moxo (Pantera Negra), retratando los saberes y conocimientos de los más grandes y últimos curanderos del bosque Amazónico. Javier va en busca de su destino mientras una pantera negra lo guía y acecha.
 screenwriter: Rodolfo Arrascue

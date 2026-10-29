@@ -16,8 +16,8 @@ const sortedFilms = films.sort((a, b) => (b.data.year ?? 0) - (a.data.year ?? 0)
         {sortedFilms.map((film) => (
           <a class="film-card" href={`/films/${film.id}/`}>
             <div class="film-image">
-              {film.data.poster ? (
-                <img src={film.data.poster} alt="" loading="lazy" />
+              {film.data.banner ?? film.data.poster ? (
+                <img src={film.data.banner ?? film.data.poster} alt="" loading="lazy" />
               ) : <div class="image-placeholder" aria-hidden="true">CL</div>}
             </div>
             <h2>{film.data.title}</h2>

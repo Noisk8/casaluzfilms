@@ -4,6 +4,7 @@ director: Rodolfo Arrascue
 format: Largometraje de ficción
 year: 2027
 poster: /images/films/la_virgen.png
+banner: /images/banners/3%20virgen%20samiria%20sin%20titulos.jpg
 featured: true
 status: Proyecto en desarrollo
 synopsis: María, una joven misteriosamente bella que lleva una maldición familiar, es engañada y llevada a un campamento de minería ilegal para ser explotada sexualmente, convirtiéndose en La Virgen del Samiria. La naturaleza mágica del bosque encarnará en María una siniestra venganza contra quienes abusaron de ellas, rompiendo las barreras del tiempo y el espacio hasta llegar a la época del caucho para hacer justicia y liberarlas de la maldición que comparten.
