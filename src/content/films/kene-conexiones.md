@@ -18,4 +18,11 @@ festivals:
   - Festival Internacional Al Este Expandido 2025
   - Muestra Internacional Documental de Bogotá 2025
   - Locarno Film Festival — Locarno Academy 2026
+stills:
+  - /images/KENE%20CONEXIONES/1.jpg
+  - /images/KENE%20CONEXIONES/2.jpg
+  - /images/KENE%20CONEXIONES/3.jpg
+  - /images/KENE%20CONEXIONES/4.jpg
+  - /images/KENE%20CONEXIONES/5.jpg
+  - /images/KENE%20CONEXIONES/6.jpg
 ---

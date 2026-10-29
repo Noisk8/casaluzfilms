@@ -28,4 +28,11 @@ festivals:
   - Premio Nacional de Largometraje Documental 2019 — DAFO, Ministerio de Cultura del Perú
   - Conecta 2019 — Encuentro de Coproducción, Chile
   - Festival Internacional Transcinema 2018 — Desarrollo de proyecto
+stills:
+  - /images/INOMOXO/FRAME%20INOMOXO1.jpg
+  - /images/INOMOXO/FRAME%20INIOMOXO2.jpg
+  - /images/INOMOXO/INOMOXO%20ESP.00_36_19_14.Imagen%20fija021.png
+  - /images/INOMOXO/INOMOXO%20ESP.00_37_33_03.Imagen%20fija022.png
+  - /images/INOMOXO/INOMOXO%20ESP.00_42_21_02.Imagen%20fija026.png
+  - /images/INOMOXO/INOMOXO%20ESP.00_50_09_23.Imagen%20fija027.png
 ---

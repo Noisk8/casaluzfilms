@@ -26,4 +26,9 @@ festivals:
   - EsteLab, Festival Al Este de Lima
   - Florianópolis Audiovisual Mercosur
   - Producers Network
+stills:
+  - /images/LA%20VIRGEN%20DEL%20SAMIRIA/IMAGEN%20LVS.png
+  - /images/LA%20VIRGEN%20DEL%20SAMIRIA/RIOS%20LVS.png
+  - /images/LA%20VIRGEN%20DEL%20SAMIRIA/Captura%20de%20pantalla%202026-08-30%20a%20las%207.02.34%E2%80%AFp.png
+  - /images/LA%20VIRGEN%20DEL%20SAMIRIA/Captura%20de%20pantalla%202026-08-30%20a%20las%207.02.51%E2%80%AFp.png
 ---

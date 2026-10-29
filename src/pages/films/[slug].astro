@@ -67,16 +67,60 @@ const trailerUrl = data.trailerUrl?.match(/^https:\/\/(www\.)?(youtube\.com\/emb
       </section>
     )}
     {galleryImages.length > 0 && (
-      <section class="film-gallery" aria-label="Bocetos visuales de la película">
-        <div class="film-stills">
+      <section class="film-gallery" aria-label={`Galería de ${data.title}`} data-film-gallery>
+        <div class="film-gallery-stage">
           {galleryImages.map((still, index) => (
-            <figure class="film-still">
-              <img src={still} alt={`Imagen ${index + 1} de ${data.title}`} loading="lazy" />
-            </figure>
+            <img
+              class:list={['film-gallery-image', index === 0 && 'is-active']}
+              src={still}
+              alt={`Imagen ${index + 1} de ${data.title}`}
+              loading={index === 0 ? 'eager' : 'lazy'}
+              data-gallery-image={index}
+            />
+          ))}
+          {galleryImages.length > 1 && <>
+            <button class="film-gallery-control is-previous" type="button" aria-label="Imagen anterior" data-gallery-previous>‹</button>
+            <button class="film-gallery-control is-next" type="button" aria-label="Imagen siguiente" data-gallery-next>›</button>
+          </>}
+        </div>
+        {galleryImages.length > 1 && (
+          <div class="film-gallery-thumbnails" role="tablist" aria-label="Seleccionar imagen">
+          {galleryImages.map((still, index) => (
+            <button
+              class:list={['film-gallery-thumbnail', index === 0 && 'is-active']}
+              type="button"
+              role="tab"
+              aria-label={`Ver imagen ${index + 1}`}
+              aria-selected={index === 0 ? 'true' : 'false'}
+              data-gallery-thumbnail={index}
+            ><img src={still} alt="" loading="lazy" /></button>
           ))}
         </div>
+        )}
       </section>
     )}
     <a class="back-link" href="/films/">← Volver a Films</a>
   </article>
+  <script>
+    document.querySelectorAll<HTMLElement>('[data-film-gallery]').forEach((gallery) => {
+      const images = [...gallery.querySelectorAll<HTMLImageElement>('[data-gallery-image]')];
+      const thumbnails = [...gallery.querySelectorAll<HTMLButtonElement>('[data-gallery-thumbnail]')];
+      if (images.length < 2) return;
+      let activeIndex = 0;
+
+      const showImage = (index: number) => {
+        activeIndex = (index + images.length) % images.length;
+        images.forEach((image, imageIndex) => image.classList.toggle('is-active', imageIndex === activeIndex));
+        thumbnails.forEach((thumbnail, thumbnailIndex) => {
+          const isActive = thumbnailIndex === activeIndex;
+          thumbnail.classList.toggle('is-active', isActive);
+          thumbnail.setAttribute('aria-selected', String(isActive));
+        });
+      };
+
+      gallery.querySelector('[data-gallery-previous]')?.addEventListener('click', () => showImage(activeIndex - 1));
+      gallery.querySelector('[data-gallery-next]')?.addEventListener('click', () => showImage(activeIndex + 1));
+      thumbnails.forEach((thumbnail, index) => thumbnail.addEventListener('click', () => showImage(index)));
+    });
+  </script>
 </SiteLayout>

@@ -27,4 +27,11 @@ festivals:
   - Festival de Cine de Huánuco FENACI 2025
   - Festival Internacional de Cine y Comunicación de los Pueblos Indígenas CLACPI 2025
   - Festival de Cine Peruano en Madrid 2026
+stills:
+  - /images/EVAODK/10300dpi.jpg
+  - /images/EVAODK/5300dpi.jpg
+  - /images/EVAODK/Captura%20de%20Pantalla%202023-07-09%20a%20la(s)%2022.06.13.png
+  - /images/EVAODK/Captura%20de%20Pantalla%202023-07-09%20a%20la(s)%2022.07.50.png
+  - /images/EVAODK/Captura%20de%20Pantalla%202023-07-10%20a%20la(s)%2009.52.10.png
+  - /images/EVAODK/Captura%20de%20Pantalla%202024-05-02%20a%20las%2011.24.09.png
 ---
