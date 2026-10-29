@@ -599,42 +599,11 @@ body:not(.landing-page) .wordmark img {
   place-items: center;
 }
 
-.home-horizontal.is-horizontal {
-  height: 240vh;
-  height: 240dvh;
-}
-
-.home-horizontal.is-horizontal .home-horizontal-viewport {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  height: 100dvh;
-  overflow: hidden;
-}
-
-.home-horizontal.is-horizontal .home-horizontal-track {
-  display: flex;
-  width: 200vw;
-  height: 100%;
-  transform: translate3d(var(--horizontal-offset, 0px), 0, 0);
-  will-change: transform;
-}
-
-.home-hero-panel,
-.home-films {
-  width: 100vw;
-  max-width: none;
-  height: 100%;
-  flex: 0 0 100vw;
-  margin: 0;
-}
-
 .home-films {
   display: flex;
   flex-direction: column;
   padding: 40px max(7vw, calc((100vw - 1110px) / 2));
   padding-bottom: 104px;
-  overflow-y: auto;
 }
 
 .home-films-heading {
