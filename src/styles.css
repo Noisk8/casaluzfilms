@@ -602,7 +602,7 @@ body:not(.landing-page) .wordmark img {
 .home-films {
   display: flex;
   flex-direction: column;
-  padding: 40px max(7vw, calc((100vw - 1110px) / 2));
+  padding-top: 40px;
   padding-bottom: 104px;
 }
 
@@ -1176,6 +1176,11 @@ body:not(.landing-page) .wordmark img {
   margin: 45px auto 130px;
 }
 
+.team-grid--single {
+  grid-template-columns: min(380px, 100%);
+  justify-content: center;
+}
+
 .person-card {
   text-align: center;
 }
@@ -1338,7 +1343,7 @@ body:not(.landing-page) .wordmark img {
 
 @media (max-width: 800px) {
   .home-films {
-    padding: 76px 6vw 28px;
+    padding-top: 76px;
     padding-bottom: 76px;
   }
 
