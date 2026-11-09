@@ -10,7 +10,7 @@ export async function getStaticPaths() {
 const { person } = Astro.props;
 ---
 
-<SiteLayout title={person.data.name}>
+<SiteLayout title={person.data.name} description={`${person.data.name}, ${person.data.role} de Casa Luz Films.`} image={person.data.portrait}>
   <article class="person-page">
     <header class="page-heading person-heading"><h1>{person.data.name}</h1></header>
     <div class="person-portrait">

@@ -16,7 +16,7 @@ const trailerUrl = data.trailerUrl?.match(/^https:\/\/(www\.)?(youtube\.com\/emb
   : undefined;
 ---
 
-<SiteLayout title={data.title} description={data.synopsis ?? `${data.title}, película de Casa Luz Films.`}>
+<SiteLayout title={data.title} description={data.synopsis ?? `${data.title}, película de Casa Luz Films.`} image={data.banner ?? data.poster}>
   <article class="film-page">
     <header class="page-heading film-page-heading">
       <p class="eyebrow">Película {data.year ? `· ${data.year}` : ''}</p>

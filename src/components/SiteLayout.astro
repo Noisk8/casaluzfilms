@@ -4,9 +4,20 @@ import '../styles.css';
 interface Props {
   title: string;
   description?: string;
+  image?: string;
 }
 
-const { title, description = 'Casa Luz Films: historias para la pantalla.' } = Astro.props;
+const {
+  title,
+  description = 'Casa Luz Films: productora cinematográfica independiente. Historias íntimas y valientes desde la primera idea hasta la pantalla.',
+  image = '/og-image.jpg',
+} = Astro.props;
+
+const SITE_URL = 'https://casaluzfilms.com';
+const siteName = 'Casa Luz Films';
+const fullTitle = title === siteName ? siteName : `${title} · ${siteName}`;
+const canonicalURL = new URL(Astro.url.pathname, SITE_URL).href;
+const imageURL = new URL(image, SITE_URL).href;
 const currentYear = new Date().getFullYear();
 ---
 
@@ -16,7 +27,41 @@ const currentYear = new Date().getFullYear();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#080a0d" />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="robots" content="index, follow" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={imageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={fullTitle} />
+    <meta property="og:locale" content="es_PE" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageURL} />
+    <meta name="twitter:image:alt" content={fullTitle} />
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: siteName,
+      url: SITE_URL,
+      logo: new URL('/favicon.svg', SITE_URL).href,
+      sameAs: [
+        'https://www.instagram.com/casaluzfilms/',
+        'https://pe.linkedin.com/company/casaluzfilms',
+      ],
+    })} />
     <script is:inline>
       document.documentElement.classList.add('intro-gate');
       try {
@@ -25,7 +70,8 @@ const currentYear = new Date().getFullYear();
         }
       } catch { /* Storage may be unavailable. */ }
     </script>
-    <title>{title} · Casa Luz Films</title>
+    <title>{fullTitle}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body class={Astro.url.pathname === '/' ? 'landing-page' : undefined}>
     <dialog class="site-intro" aria-labelledby="site-intro-title" data-site-intro>
