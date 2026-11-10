@@ -32,6 +32,13 @@ collections:
         widget: number
         required: false
         value_type: int
+      - label: Orden de aparición
+        name: order
+        widget: number
+        default: 100
+        required: false
+        value_type: int
+        hint: Los números menores aparecen primero.
       - label: Formato
         name: format
         widget: string

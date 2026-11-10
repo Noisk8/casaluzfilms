@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import SiteLayout from '../../components/SiteLayout.astro';
 
 const films = await getCollection('films');
-const sortedFilms = films.sort((a, b) => (b.data.year ?? 0) - (a.data.year ?? 0));
+const sortedFilms = [...films].sort((a, b) => a.data.order - b.data.order || (b.data.year ?? 0) - (a.data.year ?? 0));
 ---
 
 <SiteLayout title="Films" description="Películas producidas por Casa Luz Films.">

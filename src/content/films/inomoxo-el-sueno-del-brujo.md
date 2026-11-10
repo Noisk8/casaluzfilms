@@ -4,6 +4,7 @@ director: Rodolfo Arrascue
 format: Largometraje
 duration: 81
 year: 2024
+order: 1
 poster: /images/films/INOMOXO ESP.00_37_27_16.Imagen fija025.png
 banner: /images/banners/1%20inomoxo%20%20sin%20titulos.jpg
 featured: true

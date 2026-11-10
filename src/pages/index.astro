@@ -7,15 +7,18 @@ const [films, pages] = await Promise.all([
   getCollection('pages'),
 ]);
 const home = pages.find((page) => page.id === 'home');
-const sortedFilms = [...films].sort((a, b) => (b.data.year ?? 0) - (a.data.year ?? 0));
-const homeBanners = [
-  '/images/home/home%201.jpg',
-  '/images/home/home%202.jpg',
-  '/images/home/home%203.jpg',
-  '/images/home/home%204.jpg',
-  '/images/home/home%205.jpg',
-  '/images/home/home%206.jpg',
-];
+const sortedFilms = [...films].sort((a, b) => a.data.order - b.data.order || (b.data.year ?? 0) - (a.data.year ?? 0));
+const homeBannerByFilm: Record<string, string> = {
+  'inomoxo-el-sueno-del-brujo': '/images/home/home%203.jpg',
+  'el-viaje-al-origen-del-kene': '/images/home/home%202.jpg',
+  'la-virgen-del-samiria': '/images/home/home%204.jpg',
+  'kene-conexiones': '/images/home/home%206.jpg',
+  'tras-los-espejos': '/images/home/home%205.jpg',
+  'destino-negro': '/images/home/home%201.jpg',
+};
+const homeBanners = sortedFilms
+  .map((film) => homeBannerByFilm[film.id])
+  .filter(Boolean);
 ---
 
 <SiteLayout title={home?.data.title ?? 'Inicio'} description={home?.data.intro}>
