@@ -36,11 +36,17 @@ const homeBanners = sortedFilms
           <button type="button" data-carousel="next" aria-label="Película siguiente">›</button>
         </div>
       )}
+      <a class="hero-scroll" href="#films" aria-label="Bajar a Films">
+        <svg viewBox="0 0 24 32" aria-hidden="true"><path d="M12 3v24M5 20l7 7 7-7" /></svg>
+      </a>
     </section>
   ) : (
     <section class="hero-empty">
       <p class="eyebrow">Productora independiente</p>
       <h1>{home?.data.intro || 'Historias que encuentran su luz.'}</h1>
+      <a class="hero-scroll" href="#films" aria-label="Bajar a Films">
+        <svg viewBox="0 0 24 32" aria-hidden="true"><path d="M12 3v24M5 20l7 7 7-7" /></svg>
+      </a>
     </section>
   )}
 

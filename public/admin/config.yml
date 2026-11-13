@@ -175,6 +175,10 @@ collections:
             name: mission
             widget: text
             required: false
+          - label: Instagram
+            name: instagramUrl
+            widget: string
+            required: false
   - name: people
     label: Team
     label_singular: Integrante

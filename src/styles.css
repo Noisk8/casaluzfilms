@@ -251,8 +251,8 @@ h6 {
 
 .intro-enter:hover,
 .intro-enter:focus-visible {
-  background: #fff;
-  color: #080a0d;
+  background: #000;
+  color: #fff;
 }
 
 @keyframes intro-glow {
@@ -349,6 +349,10 @@ h6 {
 
 body:not(.landing-page) .wordmark img {
   filter: brightness(0);
+}
+
+body.films-catalogue-page .wordmark img {
+  filter: brightness(0) invert(1);
 }
 
 .menu-toggle {
@@ -449,6 +453,47 @@ body:not(.landing-page) .wordmark img {
   overflow: hidden;
   background: #726d5b;
   color: white;
+}
+
+.hero-scroll {
+  position: absolute;
+  z-index: 2;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  left: calc(50% - 22px);
+  display: grid;
+  width: 44px;
+  height: 48px;
+  place-items: center;
+  color: #fff;
+  opacity: .7;
+  transition: opacity 220ms ease;
+}
+
+.hero-scroll svg {
+  width: 18px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 1px 4px rgb(0 0 0 / 65%));
+  animation: hero-scroll-hint 2.6s ease-in-out infinite;
+}
+
+.hero-scroll:hover,
+.hero-scroll:focus-visible {
+  opacity: 1;
+}
+
+@keyframes hero-scroll-hint {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll svg { animation: none; }
+  html { scroll-behavior: auto; }
 }
 
 .hero-slide {
@@ -606,6 +651,15 @@ body:not(.landing-page) .wordmark img {
   padding-bottom: 104px;
 }
 
+.home-films.catalogue {
+  width: 100%;
+  margin: 0;
+  padding-inline: max(7%, calc((100% - 1080px) / 2));
+  background: #000;
+  color: #f5f5f5;
+  --quiet: #b5b5b5;
+}
+
 .home-films-heading {
   margin-bottom: 24px;
   text-align: center;
@@ -643,7 +697,7 @@ body:not(.landing-page) .wordmark img {
 }
 
 .catalogue {
-  width: min(760px, 86%);
+  width: min(1080px, 86%);
   min-height: 250px;
   margin: 40px auto 120px;
 }
@@ -656,7 +710,7 @@ body:not(.landing-page) .wordmark img {
 
 .catalogue .film-grid {
   grid-template-columns: 1fr;
-  gap: 8px;
+  gap: 18px;
 }
 
 .film-card {
@@ -675,7 +729,8 @@ body:not(.landing-page) .wordmark img {
 }
 
 .catalogue .film-image {
-  aspect-ratio: 4 / 1;
+  aspect-ratio: 3.3 / 1;
+  min-height: 160px;
 }
 
 .film-image::after {
@@ -867,6 +922,17 @@ body:not(.landing-page) .wordmark img {
   margin: 0 0 60px;
 }
 
+.film-poster {
+  width: min(480px, 100%);
+  margin: 0 auto 54px;
+}
+
+.film-poster img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .film-credits {
   margin: 0 0 54px;
 }
@@ -889,6 +955,7 @@ body:not(.landing-page) .wordmark img {
 .film-links {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 22px;
 }
 
@@ -990,28 +1057,66 @@ body:not(.landing-page) .wordmark img {
 .film-gallery-control.is-previous { left: 0; }
 .film-gallery-control.is-next { right: 0; }
 
+.film-gallery-preview {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+  min-height: 100px;
+  padding: 12px 12px 44px;
+  background: #fff;
+}
+
 .film-gallery-thumbnails {
   display: flex;
-  gap: 8px;
+  gap: 9px;
+  width: min(544.2px, 100%);
+  min-width: 0;
   justify-content: center;
-  margin-top: 12px;
-  overflow-x: auto;
-  padding-bottom: 3px;
+}
+
+.film-gallery-page {
+  flex: 0 0 28px;
+  height: 54.6px;
+  border: 0;
+  background: transparent;
+  color: #222;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.film-gallery-page:disabled {
+  opacity: .25;
+  cursor: default;
+}
+
+.film-gallery-page:not(:disabled):hover,
+.film-gallery-page:focus-visible {
+  background: #eee;
 }
 
 .film-gallery-thumbnail {
-  flex: 0 0 64px;
-  height: 42px;
+  flex: 0 1 83.2px;
+  min-width: 0;
+  width: calc((100% - 45px) / 6);
+  aspect-ratio: 64 / 42;
+  appearance: none;
   overflow: hidden;
   padding: 0;
   border: 1px solid transparent;
+  border-radius: 0;
   background: transparent;
   cursor: pointer;
   opacity: .58;
   transition: border-color 180ms ease, opacity 180ms ease;
 }
 
+.film-gallery-thumbnail[hidden] {
+  display: none;
+}
+
 .film-gallery-thumbnail img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -1052,6 +1157,14 @@ body:not(.landing-page) .wordmark img {
   text-transform: uppercase;
 }
 
+.page-heading.about-heading {
+  padding-bottom: 16px;
+}
+
+.about-heading + .about-content {
+  margin-top: 16px;
+}
+
 .about-content p {
   margin: 0 0 22px;
 }
@@ -1066,14 +1179,14 @@ body:not(.landing-page) .wordmark img {
 }
 
 .foundation-page {
-  width: min(1110px, 86%);
+  width: min(1110px, 78%);
   margin: 118px auto 135px;
 }
 
 .foundation-logo {
   display: flex;
   width: min(512px, 100%);
-  margin: 0 auto 92px;
+  margin: 0 auto 32px;
   justify-content: center;
 }
 
@@ -1084,24 +1197,23 @@ body:not(.landing-page) .wordmark img {
 }
 
 .foundation-copy {
-  max-width: 940px;
-  font-size: 14px;
-  line-height: 1.72;
+  width: 100%;
+  font-size: 15px;
+  line-height: 1.9;
 }
 
 .foundation-copy h1,
 .foundation-copy h2 {
   margin: 0 0 27px;
-  font-size: 14px;
-  font-weight: 400;
+  font-size: inherit;
+  font-weight: 700;
   letter-spacing: .03em;
   line-height: 1.3;
   text-transform: uppercase;
 }
 
 .foundation-copy h1 span {
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration: none;
 }
 
 .foundation-copy p {
@@ -1143,7 +1255,7 @@ body:not(.landing-page) .wordmark img {
   transition: opacity 180ms ease, transform 180ms ease;
 }
 
-.contact-socials a:first-child {
+.contact-socials a[aria-label$="IMDb"] {
   width: 45px;
 }
 
@@ -1190,12 +1302,14 @@ body:not(.landing-page) .wordmark img {
   aspect-ratio: 1;
   background: #dedbd4;
   filter: grayscale(1);
-  transition: filter 350ms ease;
+  outline: 2px solid transparent;
+  outline-offset: 4px;
+  transition: outline-color 250ms ease;
 }
 
 .person-card:hover .person-image,
 .person-card:focus-visible .person-image {
-  filter: grayscale(0);
+  outline-color: var(--ink);
 }
 
 .person-card h2 {
@@ -1233,15 +1347,11 @@ body:not(.landing-page) .wordmark img {
   border-radius: 50%;
   background: #dedbd4;
   filter: grayscale(1);
-  transition: filter 350ms ease;
-}
-
-.person-portrait:hover {
-  filter: grayscale(0);
 }
 
 .person-role {
-  margin-bottom: 35px;
+  width: min(900px, 78%);
+  margin: 0 auto 35px;
 }
 
 .person-bio {
@@ -1289,24 +1399,67 @@ body:not(.landing-page) .wordmark img {
 }
 
 .footer-socials a {
+  position: relative;
   display: grid;
-  width: 16px;
-  height: 16px;
+  width: 40px;
+  height: 40px;
   place-items: center;
+  border-radius: 50%;
   color: rgb(255 255 255 / 82%);
-  transition: color 180ms ease, transform 180ms ease;
+  transition: color 280ms ease, transform 280ms ease;
+}
+
+.footer-socials a::before {
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(255 232 180 / 38%) 0%, rgb(255 220 150 / 14%) 38%, transparent 72%);
+  opacity: 0;
+  pointer-events: none;
+  content: '';
+  transition: opacity 280ms ease;
 }
 
 .footer-socials a:hover,
 .footer-socials a:focus-visible {
-  color: #fff;
-  transform: scale(1.12);
+  color: #fff5dc;
+  transform: translateY(-2px);
+}
+
+.footer-socials a:hover::before,
+.footer-socials a:focus-visible::before {
+  opacity: 1;
+}
+
+.footer-socials a:focus-visible {
+  outline: 1px solid #ffe8b4;
+  outline-offset: 3px;
 }
 
 .footer-socials svg {
-  width: 100%;
-  height: 100%;
+  position: relative;
+  width: 23px;
+  height: 23px;
   fill: currentColor;
+  transition: filter 280ms ease;
+}
+
+.footer-socials a:hover svg,
+.footer-socials a:focus-visible svg {
+  filter: drop-shadow(0 0 5px rgb(255 231 176 / 85%));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-socials a,
+  .footer-socials a::before,
+  .footer-socials svg {
+    transition: none;
+  }
+
+  .footer-socials a:hover,
+  .footer-socials a:focus-visible {
+    transform: none;
+  }
 }
 
 .footer-socials svg rect,
@@ -1467,6 +1620,7 @@ body:not(.landing-page) .wordmark img {
   .film-festivals,
   .about-content,
   .contact-content,
+  .person-role,
   .person-bio {
     width: 86%;
     font-size: 13px;
@@ -1478,7 +1632,7 @@ body:not(.landing-page) .wordmark img {
   }
 
   .foundation-logo {
-    margin-bottom: 62px;
+    margin-bottom: 24px;
   }
 
   .foundation-copy {
@@ -1541,5 +1695,161 @@ body:not(.landing-page) .wordmark img {
   *::after {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* Preserve the content's natural capitalization and left alignment. */
+#main :is(h1, h2, h3, h4, p, dl, dt, dd, li, figcaption, a),
+#main :is(.film-copy, .about-content, .contact-content) {
+  text-transform: none;
+  text-align: left;
+  letter-spacing: normal;
+}
+
+#main .page-heading {
+  justify-items: start;
+  text-align: left;
+  padding-inline: 7%;
+}
+
+#main .home-films-heading {
+  text-align: left;
+}
+
+#main .person-role {
+  text-align: center;
+}
+
+#main .catalogue .film-card h2 {
+  text-transform: uppercase;
+  letter-spacing: 0.19em;
+}
+
+.films-catalogue-page {
+  --ink: #f5f5f5;
+  --paper: #000;
+  --quiet: #b5b5b5;
+  background: #000;
+  color: var(--ink);
+}
+
+#main .back-link {
+  width: min(900px, 78%);
+}
+
+/* Page titles share the same column as their associated content. */
+#main .page-heading:has(+ .about-content),
+#main .page-heading:has(+ .contact-content) {
+  width: min(1110px, 78%);
+  margin-inline: auto;
+  padding-inline: 0;
+}
+
+#main .film-page-heading {
+  width: min(900px, 72%);
+  margin-inline: auto;
+  padding-inline: 0;
+}
+
+#main .person-page .page-heading {
+  width: min(900px, 78%);
+  margin-inline: auto;
+  padding-inline: 0;
+}
+
+#main .page-heading:has(+ .catalogue) {
+  width: min(1080px, 86%);
+  margin-inline: auto;
+  padding-inline: 0;
+}
+
+#main .page-heading:has(+ .team-grid) {
+  width: min(1180px, 86%);
+  margin-inline: auto;
+  padding-inline: 0;
+}
+
+#main .page-heading:has(+ .team-grid--single) {
+  width: min(380px, 86%);
+}
+
+.home-films-heading {
+  width: min(100%, 760px);
+  margin-inline: auto;
+}
+
+.contact-socials {
+  justify-content: flex-start;
+}
+
+@media (max-width: 800px) {
+  #main .film-page-heading { width: 78%; }
+}
+
+@media (max-width: 520px) {
+  #main .page-heading:has(+ .about-content),
+  #main .page-heading:has(+ .contact-content),
+  #main .film-page-heading,
+  #main .person-page .page-heading { width: 86%; }
+
+  #main .page-heading:has(+ .catalogue) { width: 90%; }
+  #main .page-heading:has(+ .team-grid) { width: 88%; }
+  #main .page-heading:has(+ .team-grid--single) { width: min(380px, 88%); }
+}
+
+#main .film-page .back-link {
+  width: min(900px, 72%);
+}
+
+@media (max-width: 800px) {
+  .film-festivals,
+  #main .film-page .back-link { width: 78%; }
+}
+
+@media (max-width: 520px) {
+  .film-festivals,
+  #main .film-page .back-link { width: 86%; }
+}
+
+/* A consistent reading column and body size across content pages. */
+#main {
+  --content-width: min(1110px, 78%);
+  --body-size: 15px;
+}
+
+#main :is(.about-content, .contact-content, .foundation-page, .film-copy, .film-festivals, .person-bio),
+#main .film-page-heading,
+#main .person-page .page-heading,
+#main .person-role,
+#main .person-page .back-link,
+#main .film-page .back-link {
+  width: var(--content-width);
+}
+
+#main :is(.about-content, .contact-content, .foundation-copy, .film-copy, .film-festivals li, .person-bio) {
+  font-size: var(--body-size);
+  line-height: 1.9;
+}
+
+@media (max-width: 520px) {
+  #main {
+    --content-width: 86%;
+    --body-size: 13px;
+  }
+}
+
+.films-catalogue-page .catalogue,
+.films-catalogue-page #main .page-heading {
+  width: min(960px, 82%);
+}
+
+.films-catalogue-page .catalogue .film-image {
+  min-height: 145px;
+}
+
+@media (max-width: 520px) {
+  .films-catalogue-page .catalogue,
+  .films-catalogue-page #main .page-heading {
+    width: 86%;
   }
 }

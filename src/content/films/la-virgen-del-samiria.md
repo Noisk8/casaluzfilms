@@ -4,7 +4,7 @@ director: Rodolfo Arrascue
 format: Largometraje de ficción
 year: 2027
 order: 3
-poster: /images/films/la_virgen.png
+poster: /images/afiches/la_virgen_samiria.png
 banner: /images/banners/3%20virgen%20samiria%20sin%20titulos.jpg
 featured: true
 status: Proyecto en desarrollo

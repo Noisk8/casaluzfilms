@@ -36,6 +36,7 @@ const pages = defineCollection({
     intro: z.string().default(''),
     paragraphs: z.array(z.string()).default([]),
     mission: z.string().optional(),
+    instagramUrl: z.string().url().optional(),
     email: z.string().optional(),
     address: z.string().optional(),
     phone: z.string().optional(),

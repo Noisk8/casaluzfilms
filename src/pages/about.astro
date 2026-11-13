@@ -6,8 +6,8 @@ const pages = await getCollection('pages');
 const about = pages.find((page) => page.id === 'about');
 ---
 
-<SiteLayout title={about?.data.title ?? 'About'}>
-  <section class="page-heading"><h1>{about?.data.title ?? 'About'}</h1></section>
+<SiteLayout title={about?.data.title ?? 'Casa luz films'}>
+  <section class="page-heading about-heading"><h1>{about?.data.title ?? 'Casa luz films'}</h1></section>
   <article class="about-content">
     {about?.data.intro && <p class="about-lead">{about.data.intro}</p>}
     {about?.data.paragraphs.map((paragraph) => <p>{paragraph}</p>)}

@@ -73,7 +73,10 @@ const currentYear = new Date().getFullYear();
     <title>{fullTitle}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
-  <body class={Astro.url.pathname === '/' ? 'landing-page' : undefined}>
+  <body class:list={[
+    Astro.url.pathname === '/' && 'landing-page',
+    /^\/films\/?$/.test(Astro.url.pathname) && 'films-catalogue-page',
+  ]}>
     <dialog class="site-intro" aria-labelledby="site-intro-title" data-site-intro>
       <video
         class="intro-background-video"
@@ -117,11 +120,11 @@ const currentYear = new Date().getFullYear();
     <nav class="menu-panel" id="site-menu" aria-label="Navegación principal" inert>
       <button class="menu-close" type="button" aria-label="Cerrar menú">×</button>
       <div class="menu-links">
-        <a href="/about/">About</a>
+        <a href="/about/">Acerca de</a>
+        <a href="/films/">Películas</a>
+        <a href="/team/">Equipo</a>
         <a href="/fundacion/">Fundación</a>
-        <a href="/films/">Films</a>
-        <a href="/team/">Team</a>
-        <a href="/contact/">Contact</a>
+        <a href="/contact/">Contacto</a>
       </div>
     </nav>
     <main id="main">

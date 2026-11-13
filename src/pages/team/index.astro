@@ -5,8 +5,8 @@ import SiteLayout from '../../components/SiteLayout.astro';
 const people = (await getCollection('people')).sort((a, b) => a.data.order - b.data.order);
 ---
 
-<SiteLayout title="Team" description="Conoce al equipo de Casa Luz Films.">
-  <section class="page-heading"><h1>Team</h1></section>
+<SiteLayout title="Equipo" description="Conoce al equipo de Casa Luz Films.">
+  <section class="page-heading"><h1>Equipo</h1></section>
   <section class:list={['team-grid', { 'team-grid--single': people.length === 1 }]} aria-label="Equipo">
     {people.length ? people.map((person) => (
       <a class="person-card" href={`/team/${person.id}/`}>
