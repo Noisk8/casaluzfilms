@@ -1186,14 +1186,18 @@ body.films-catalogue-page .wordmark img {
 .foundation-logo {
   display: flex;
   width: min(512px, 100%);
-  margin: 0 auto 32px;
+  aspect-ratio: 1080 / 356;
+  margin: 0 auto 40px;
   justify-content: center;
+  overflow: hidden;
 }
 
 .foundation-logo img {
   display: block;
   width: 100%;
   height: auto;
+  align-self: flex-start;
+  transform: translateY(-33.26%);
 }
 
 .foundation-copy {
@@ -1632,7 +1636,7 @@ body.films-catalogue-page .wordmark img {
   }
 
   .foundation-logo {
-    margin-bottom: 24px;
+    margin-bottom: 30px;
   }
 
   .foundation-copy {
